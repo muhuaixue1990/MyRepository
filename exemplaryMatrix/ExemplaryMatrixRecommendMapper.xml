@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixRecommend">
+	
+	<!-- 插入示范基地——示范基地推荐表 -->
+	<insert id="saveExemplaryMatrixRecommend" parameterType="exemplaryMatrixRecommend">
+		INSERT INTO exemplary_matrix_recommend 
+		(
+			user_code , 
+			exemplary_matrix_application_id , 
+			evaluative_methods , 
+			evaluation_opinions , 
+			recommendations , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{exemplaryMatrixApplicationId} , 
+			#{evaluativeMethods} , 
+			#{evaluationOpinions} , 
+			#{recommendations} , 
+			#{createStamp} , 
+			#{updateStamp} 
+		)
+	</insert>
+	
+	<!-- 更新示范基地——示范基地推荐表 -->
+	<update id="updateExemplaryMatrixRecommend" parameterType="exemplaryMatrixRecommend">
+		UPDATE exemplary_matrix_recommend SET 
+		<if test="evaluativeMethods != '' and evaluativeMethods != null">
+			evaluative_methods = #{evaluativeMethods} , 
+		</if>
+		<if test="evaluationOpinions != '' and evaluationOpinions != null">
+			evaluation_opinions = #{evaluationOpinions} , 
+		</if>
+		<if test="recommendations != '' and recommendations != null">
+			recommendations = #{recommendations} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE id = #{id} AND user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</update>
+	
+	<!-- 查询示范基地——示范基地推荐表 -->
+	<select id="getExemplaryMatrixRecommendByParams" parameterType="map" resultType="exemplaryMatrixRecommend">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			exemplary_matrix_application_id exemplaryMatrixApplicationId , 
+			evaluative_methods evaluativeMethods , 
+			evaluation_opinions evaluationOpinions , 
+			recommendations recommendations , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM exemplary_matrix_recommend 
+		WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</select>
+	
+	
+	<!-- 查询示范基地——示范基地推荐表(Map) -->
+	<select id="getExemplaryMatrixRecommendMapByParams" parameterType="map" resultType="map">
+		SELECT 
+			id "id" , 
+			user_code "userCode" , 
+			exemplary_matrix_application_id "exemplaryMatrixApplicationId" , 
+			evaluative_methods "evaluativeMethods" , 
+			evaluation_opinions "evaluationOpinions" , 
+			recommendations "recommendations" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" 
+		FROM exemplary_matrix_recommend 
+		WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</select>
+	
+	<delete id="deleteExemplaryMatrixRecommendByParams" parameterType="map">
+		DELETE FROM exemplary_matrix_recommend WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{applicationId}
+	</delete>
+	
+</mapper>

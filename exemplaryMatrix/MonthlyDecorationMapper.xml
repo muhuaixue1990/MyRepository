@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.MonthlyDecoration">
+	
+	<!-- 插入示范基地——月度服务能力升级情况——办公设备表 -->
+	<insert id="saveMonthlyDecoration" parameterType="monthlyDecoration">
+		INSERT INTO monthly_decoration 
+		(
+			user_code , 
+			year , 
+			month , 
+			contract_name , 
+			contract_no , 
+			contract_contents , 
+			invoice_no , 
+			audit_type , 
+			create_stamp , 
+			update_stamp ,
+			amount_invested , 
+			time_invested 
+		) VALUES (
+			#{userCode} , 
+			#{year} , 
+			#{month} , 
+			#{contractName} , 
+			#{contractNo} , 
+			#{contractContents} , 
+			#{invoiceNo} , 
+			#{auditType} , 
+			#{createStamp} , 
+			#{updateStamp} ,
+			#{amountInvested} ,
+			#{timeInvested}
+		)
+	</insert>
+	
+	<!-- 更新示范基地——月度服务能力升级情况——办公设备表-->
+	<update id="updateMonthlyDecoration" parameterType="monthlyDecoration">
+		UPDATE monthly_decoration SET 
+		<if test="contractName != '' and contractName != null">
+			contract_name = #{contractName} , 
+		</if>
+		<if test="contractNo != '' and contractNo != null">
+			contract_no = #{contractNo} , 
+		</if>
+		<if test="contractContents != '' and contractContents != null">
+			contract_contents = #{contractContents} , 
+		</if>
+		<if test="invoiceNo != '' and invoiceNo != null">
+			invoice_no = #{invoiceNo} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="amountInvested != '' and amountInvested != null">
+			amount_invested = #{amountInvested} , 
+		</if>
+		<if test="timeInvested != '' and timeInvested != null">
+			time_invested = #{timeInvested} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</update>
+	
+	<!-- 查询示范基地——月度服务能力升级情况——办公设备表-->
+	<select id="findMonthlyDecoration" parameterType="map" resultType="monthlyDecoration">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			contract_name contractName , 
+			contract_no contractNo , 
+			contract_contents contractContents , 
+			invoice_no invoiceNo , 
+			create_stamp createStamp , 
+			update_stamp updateStamp ,
+			amount_invested amountInvested , 
+			time_invested timeInvested
+		FROM monthly_decoration 
+		WHERE id = #{id} AND user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</select>
+	
+	<!-- 查看月报查询装修改造升级 总数 -->
+	<select id="getDecorationListByCodeCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM monthly_decoration 
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	
+	<!-- 查看月报查询装修改造升级-->
+	<select id="getDecorationListByCode" parameterType="map" resultType="monthlyDecoration">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			id id , 
+			user_code userCode , 
+			year year , 
+			month month , 
+			contract_name contractName , 
+			contract_no contractNo , 
+			contract_contents contractContents , 
+			invoice_no invoiceNo , 
+			audit_type auditType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp ,
+			amount_invested amountInvested , 
+			time_invested timeInvested
+		FROM monthly_decoration
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	<!-- 查看月报查询装修改造升级返回map -->
+	<select id="getDecorationListByCodeForMap" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			id "id" , 
+			user_code "userCode" , 
+			year "year" , 
+			month "month" , 
+			contract_name "contractName" , 
+			contract_no "contractNo" , 
+			contract_contents "contractContents" , 
+			invoice_no "invoiceNo" , 
+			audit_type "auditType" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" ,
+			amount_invested "amountInvested" , 
+			time_invested "timeInvested"
+		FROM monthly_decoration
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	<delete id="deleteMonthlyDecorationByParams">
+		DELETE FROM monthly_decoration WHERE user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</delete>
+</mapper>

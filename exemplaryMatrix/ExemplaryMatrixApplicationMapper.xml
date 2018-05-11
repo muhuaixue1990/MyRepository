@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixApplication">
+	
+	<!-- 插入示范基地申请表 -->
+	<insert id="saveApplication" parameterType="exemplaryMatrixApplication" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_application 
+		(
+			user_code , 
+			contacter , 
+			contact_phone , 
+			matrix_name , 
+			establish_time , 
+			matrix_address , 
+			competent_department , 
+			project_area , 
+			building_area , 
+			own_area , 
+			rent_area , 
+			commonality_area , 
+			personnel_quantity , 
+			service_staff , 
+			instructor_quantity , 
+			facilitating_agency , 
+			enterprise_quantity , 
+			provide_place , 
+			optical_fiber , 
+			broadband , 
+			wifi , 
+			development_planning , 
+			goal_of_development , 
+			management_system , 
+			fee_scale , 
+			development_planning_url , 
+			goal_of_development_url , 
+			management_system_url , 
+			fee_scale_url , 
+			information_service , 
+			tutorship , 
+			innovation_support , 
+			personnel_training , 
+			marketing , 
+			financing_service , 
+			management_consultancy , 
+			other_service , 
+			model_selfreport , 
+			type , 
+			district_audit_type , 
+			district_audit_time , 
+			district_audit_user , 
+			third_party_audit_type , 
+			third_party_audit_time , 
+			third_party_audit_user , 
+			city_audit_type , 
+			city_audit_time , 
+			city_audit_user , 
+			opinion , 
+			send_third_type , 
+			application_year , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{contacter} , 
+			#{contactPhone} , 
+			#{matrixName} , 
+			#{establishTime} , 
+			#{matrixAddress} , 
+			#{competentDepartment} , 
+			#{projectArea} , 
+			#{buildingArea} , 
+			#{ownArea} , 
+			#{rentArea} , 
+			#{commonalityArea} , 
+			#{personnelQuantity} , 
+			#{serviceStaff} , 
+			#{instructorQuantity} , 
+			#{facilitatingAgency} , 
+			#{enterpriseQuantity} , 
+			#{providePlace} , 
+			#{opticalFiber} , 
+			#{broadband} , 
+			#{wifi} , 
+			#{developmentPlanning} , 
+			#{goalOfDevelopment} , 
+			#{managementSystem} , 
+			#{feeScale} , 
+			#{developmentPlanningUrl} , 
+			#{goalOfDevelopmentUrl} , 
+			#{managementSystemUrl} , 
+			#{feeScaleUrl} , 
+			#{informationService} , 
+			#{tutorship} , 
+			#{innovationSupport} , 
+			#{personnelTraining} , 
+			#{marketing} , 
+			#{financingService} , 
+			#{managementConsultancy} , 
+			#{otherService} , 
+			#{modelSelfreport} , 
+			#{type} , 
+			#{districtAuditType} , 
+			#{districtAuditTime} , 
+			#{districtAuditUser} , 
+			#{thirdPartyAuditType} , 
+			#{thirdPartyAuditTime} , 
+			#{thirdPartyAuditUser} , 
+			#{cityAuditType} , 
+			#{cityAuditTime} , 
+			#{cityAuditUser} , 
+			#{opinion} , 
+			#{sendThirdType} , 
+			#{applicationYear} , 
+			#{createStamp} , 
+			#{updateStamp}
+		)
+	</insert>
+	
+	<!-- 更新示范基地申请表 -->
+	<update id="updateApplication" parameterType="exemplaryMatrixApplication">
+		UPDATE exemplary_matrix_application SET 
+		<if test="contacter != '' and contacter != null">
+			contacter = #{contacter} , 
+		</if>
+		<if test="contactPhone != '' and contactPhone != null">
+			contact_phone = #{contactPhone} , 
+		</if>
+		
+		<if test="matrixName != '' and matrixName != null">
+			matrix_name = #{matrixName} , 
+		</if>
+		<if test="establishTime != '' and establishTime != null">
+			establish_time = #{establishTime} , 
+		</if>
+		<if test="matrixAddress != '' and matrixAddress != null">
+			matrix_address = #{matrixAddress} , 
+		</if>
+		<if test="competentDepartment != '' and competentDepartment != null">
+			competent_department = #{competentDepartment} , 
+		</if>
+		<if test="projectArea != '' and projectArea != null">
+			project_area = #{projectArea} , 
+		</if>
+		<if test="buildingArea != '' and buildingArea != null">
+			building_area = #{buildingArea} , 
+		</if>
+		<if test="ownArea != '' and ownArea != null">
+			own_area = #{ownArea} , 
+		</if>
+		<if test="rentArea != '' and rentArea != null">
+			rent_area = #{rentArea} , 
+		</if>
+		<if test="rentArea == 0.0">
+			rent_area = #{rentArea} , 
+		</if>
+		<if test="commonalityArea != '' and commonalityArea != null">
+			commonality_area = #{commonalityArea} , 
+		</if>
+		<if test="commonalityArea == 0.0">
+			commonality_area = #{commonalityArea} , 
+		</if>
+		<if test="personnelQuantity != '' and personnelQuantity != null">
+			personnel_quantity = #{personnelQuantity} , 
+		</if>
+		<if test="serviceStaff != '' and serviceStaff != null">
+			service_staff = #{serviceStaff} , 
+		</if>
+		<if test="instructorQuantity != '' and instructorQuantity != null">
+			instructor_quantity = #{instructorQuantity} , 
+		</if>
+		<if test="facilitatingAgency != '' and facilitatingAgency != null">
+			facilitating_agency = #{facilitatingAgency} , 
+		</if>
+		<if test="enterpriseQuantity != '' and enterpriseQuantity != null">
+			enterprise_quantity = #{enterpriseQuantity} , 
+		</if>
+		<if test="providePlace != '' and providePlace != null">
+			provide_place = #{providePlace} , 
+		</if>
+		<if test="opticalFiber != '' and opticalFiber != null">
+			optical_fiber = #{opticalFiber} , 
+		</if>
+		<if test="broadband != '' and broadband != null">
+			broadband = #{broadband} , 
+		</if>
+		<if test="wifi != '' and wifi != null">
+			wifi = #{wifi} , 
+		</if>
+		<if test="developmentPlanning != '' and developmentPlanning != null">
+			development_planning = #{developmentPlanning} , 
+		</if>
+		<if test="goalOfDevelopment != '' and goalOfDevelopment != null">
+			goal_of_development = #{goalOfDevelopment} , 
+		</if>
+		<if test="managementSystem != '' and managementSystem != null">
+			management_system = #{managementSystem} , 
+		</if>
+		<if test="feeScale != '' and feeScale != null">
+			fee_scale = #{feeScale} , 
+		</if>
+		<if test="developmentPlanningUrl != '' and developmentPlanningUrl != null">
+			development_planning_url = #{developmentPlanningUrl} , 
+		</if>
+		<if test="goalOfDevelopmentUrl != '' and goalOfDevelopmentUrl != null">
+			goal_of_development_url = #{goalOfDevelopmentUrl} , 
+		</if>
+		<if test="managementSystemUrl != '' and managementSystemUrl != null">
+			management_system_url = #{managementSystemUrl} , 
+		</if>
+		<if test="feeScaleUrl != '' and feeScaleUrl != null">
+			fee_scale_url = #{feeScaleUrl} , 
+		</if>
+		<if test="informationService != '' and informationService != null">
+			information_service = #{informationService} , 
+		</if>
+		<if test="tutorship != '' and tutorship != null">
+			tutorship = #{tutorship} , 
+		</if>
+		<if test="innovationSupport != '' and innovationSupport != null">
+			innovation_support = #{innovationSupport} , 
+		</if>
+		<if test="personnelTraining != '' and personnelTraining != null">
+			personnel_training = #{personnelTraining} , 
+		</if>
+		<if test="marketing != '' and marketing != null">
+			marketing = #{marketing} , 
+		</if>
+		<if test="financingService != '' and financingService != null">
+			financing_service = #{financingService} , 
+		</if>
+		<if test="managementConsultancy != '' and managementConsultancy != null">
+			management_consultancy = #{managementConsultancy} , 
+		</if>
+		<if test="otherService != '' and otherService != null">
+			other_service = #{otherService} , 
+		</if>
+		<if test="modelSelfreport != '' and modelSelfreport != null">
+			model_selfreport = #{modelSelfreport} , 
+		</if>
+		<if test="type != '' and type != null">
+			type = #{type} , 
+		</if>
+		<if test="districtAuditType != '' and districtAuditType != null">
+			district_audit_type = #{districtAuditType} , 
+		</if>
+		<if test="districtAuditTime != '' and districtAuditTime != null">
+			district_audit_time = #{districtAuditTime} , 
+		</if>
+		<if test="districtAuditUser != '' and districtAuditUser != null">
+			district_audit_user = #{districtAuditUser} , 
+		</if>
+		<if test="thirdPartyAuditType != '' and thirdPartyAuditType != null">
+			third_party_audit_type = #{thirdPartyAuditType} , 
+		</if>
+		<if test="thirdPartyAuditTime != '' and thirdPartyAuditTime != null">
+			third_party_audit_time = #{thirdPartyAuditTime} , 
+		</if>
+		<if test="thirdPartyAuditUser != '' and thirdPartyAuditUser != null">
+			third_party_audit_user = #{thirdPartyAuditUser} , 
+		</if>
+		<if test="cityAuditType != '' and cityAuditType != null">
+			city_audit_type = #{cityAuditType} , 
+		</if>
+		<if test="cityAuditTime != '' and cityAuditTime != null">
+			city_audit_time = #{cityAuditTime} , 
+		</if>
+		<if test="cityAuditUser != '' and cityAuditUser != null">
+			city_audit_user = #{cityAuditUser} , 
+		</if>
+		<if test="opinion != '' and opinion != null">
+			opinion = #{opinion} , 
+		</if>
+		<if test="sendThirdType != '' and sendThirdType != null">
+			send_third_type = #{sendThirdType} , 
+		</if>
+		<if test="updateStamp != '' and updateStamp != null">
+			update_stamp = #{updateStamp} , 
+		</if> 
+			application_year = #{applicationYear} 
+		WHERE 1=1 
+		<if test="userCode != '' and userCode != null">
+			AND user_code = #{userCode} 
+		</if>
+		<if test="applicationYear != '' and applicationYear != null">
+			AND application_year = #{applicationYear} 
+		</if>
+	</update>
+	
+	<!-- 查询示范基地申请表 -->
+	<select id="findExemplaryMatrixApplication" parameterType="map" resultType="exemplaryMatrixApplication">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			contacter contacter , 
+			contact_phone contactPhone , 
+			matrix_name matrixName , 
+			establish_time establishTime , 
+			matrix_address matrixAddress , 
+			competent_department competentDepartment , 
+			project_area projectArea , 
+			building_area buildingArea , 
+			own_area ownArea , 
+			rent_area rentArea , 
+			commonality_area commonalityArea , 
+			personnel_quantity personnelQuantity , 
+			service_staff serviceStaff , 
+			instructor_quantity instructorQuantity , 
+			facilitating_agency facilitatingAgency , 
+			enterprise_quantity enterpriseQuantity , 
+			provide_place providePlace , 
+			optical_fiber opticalFiber , 
+			broadband broadband , 
+			wifi wifi , 
+			development_planning developmentPlanning , 
+			goal_of_development goalOfDevelopment , 
+			management_system managementSystem , 
+			fee_scale feeScale , 
+			development_planning_url developmentPlanningUrl , 
+			goal_of_development_url goalOfDevelopmentUrl , 
+			management_system_url managementSystemUrl , 
+			fee_scale_url feeScaleUrl , 
+			information_service informationService , 
+			tutorship tutorship , 
+			innovation_support innovationSupport , 
+			personnel_training personnelTraining , 
+			marketing marketing , 
+			financing_service financingService , 
+			management_consultancy managementConsultancy , 
+			other_service otherService , 
+			model_selfreport modelSelfreport , 
+			district_audit_type districtAuditType , 
+			district_audit_time districtAuditTime , 
+			district_audit_user districtAuditUser , 
+			third_party_audit_type thirdPartyAuditType , 
+			third_party_audit_time thirdPartyAuditTime , 
+			third_party_audit_user thirdPartyAuditUser , 
+			city_audit_type cityAuditType , 
+			city_audit_time cityAuditTime , 
+			city_audit_user cityAuditUser , 
+			opinion opinion , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM exemplary_matrix_application 
+		WHERE id = #{id} AND user_code = #{userCode}
+	</select>
+	
+	<!-- 通过UserCode获取申请结果 -->
+	<select id="getResultForApplicationByUserCode" parameterType="map" resultType="exemplaryMatrixApplication">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			matrix_name matrixName , 
+			contacter contacter , 
+			contact_phone contactPhone , 
+			type type , 
+			district_audit_type districtAuditType , 
+			district_audit_time districtAuditTime , 
+			district_audit_user districtAuditUser , 
+			third_party_audit_type thirdPartyAuditType , 
+			third_party_audit_time thirdPartyAuditTime , 
+			third_party_audit_user thirdPartyAuditUser , 
+			city_audit_type cityAuditType , 
+			city_audit_time cityAuditTime , 
+			city_audit_user cityAuditUser , 
+			opinion opinion , 
+			send_third_type sendThirdType , 
+			application_year applicationYear , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM exemplary_matrix_application 
+		WHERE user_code = #{userCode} AND application_year = #{applicationYear}
+	</select>
+	
+	<!-- 查看报表列表时获取基地列表总数 -->
+	<select id="findMatrixListForStatementListCount" parameterType="map" resultType="map">
+		SELECT count(a.userCode) "count" 
+		FROM (
+			SELECT 
+				DISTINCT(e.user_code) userCode,
+				e.matrix_name matrixName 
+			FROM exemplary_matrix e 
+			INNER JOIN enterprise_info i ON e.user_code = i.user_code 
+			WHERE 
+				1 = 1
+			<if test="matrixName != '' and matrixName != null">
+				AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+			</if>
+			<if test="district != '' and district != null">
+				AND i.district = #{district} 
+			</if>
+		) a
+	</select>
+	
+	
+	<!-- 查看报表列表时获取基地列表 -->
+	<select id="findMatrixListForStatementList" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			DISTINCT(e.user_code) "userCode",
+			e.matrix_name "matrixName" , 
+			e.application_year "applicationYear" , 
+			s.name "district" 
+		FROM exemplary_matrix e 
+		INNER JOIN enterprise_info i ON e.user_code = i.user_code 
+		INNER JOIN sys_code s ON s.code = i.district 
+		INNER JOIN exemplary_matrix_service_data em ON e.user_code = em.user_code
+		WHERE 
+			1=1
+		<if test="matrixName != '' and matrixName != null">
+			AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+		<if test="district != '' and district != null">
+			AND i.district = #{district} 
+		</if>
+		<if test="serviceYear != '' and serviceYear != null">
+			AND em.service_year = #{serviceYear} 
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null">
+			AND em.service_quarter = #{serviceQuarter} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND em.audit_type = #{auditType} 
+		</if>
+	</select>
+	
+	<!-- 通过code获取基地信息 -->
+	<select id="getMatrixInfoByCode" parameterType="map" resultType="exemplaryMatrixApplication">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			contacter contacter , 
+			contact_phone contactPhone , 
+			matrix_name matrixName , 
+			establish_time establishTime , 
+			matrix_address matrixAddress , 
+			competent_department competentDepartment , 
+			project_area projectArea , 
+			building_area buildingArea , 
+			own_area ownArea , 
+			rent_area rentArea , 
+			commonality_area commonalityArea , 
+			personnel_quantity personnelQuantity , 
+			service_staff serviceStaff , 
+			instructor_quantity instructorQuantity , 
+			facilitating_agency facilitatingAgency , 
+			enterprise_quantity enterpriseQuantity , 
+			provide_place providePlace , 
+			optical_fiber opticalFiber , 
+			broadband broadband , 
+			wifi wifi , 
+			development_planning developmentPlanning , 
+			goal_of_development goalOfDevelopment , 
+			management_system managementSystem , 
+			fee_scale feeScale , 
+			development_planning_url developmentPlanningUrl , 
+			goal_of_development_url goalOfDevelopmentUrl , 
+			management_system_url managementSystemUrl , 
+			fee_scale_url feeScaleUrl , 
+			information_service informationService , 
+			tutorship tutorship , 
+			innovation_support innovationSupport , 
+			personnel_training personnelTraining , 
+			marketing marketing , 
+			financing_service financingService , 
+			management_consultancy managementConsultancy , 
+			other_service otherService , 
+			model_selfreport modelSelfreport , 
+			type type , 
+			district_audit_type districtAuditType , 
+			district_audit_time districtAuditTime , 
+			district_audit_user districtAuditUser , 
+			third_party_audit_type thirdPartyAuditType , 
+			third_party_audit_time thirdPartyAuditTime , 
+			third_party_audit_user thirdPartyAuditUser , 
+			city_audit_type cityAuditType , 
+			city_audit_time cityAuditTime , 
+			city_audit_user cityAuditUser , 
+			opinion opinion , 
+			send_third_type sendThirdType , 
+			application_year applicationYear , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM 
+			exemplary_matrix_application 
+		WHERE 
+			user_code = #{userCode} 
+	</select>
+	
+	
+	<!-- 通过code获取基地信息(返回Map) -->
+	<select id="getMatrixInfoMapByCode" parameterType="map" resultType="map">
+		SELECT 
+			id "id" , 
+			user_code "userCode" , 
+			contacter "contacter" , 
+			contact_phone "contactPhone" , 
+			matrix_name "matrixName" , 
+			establish_time "establishTime" , 
+			matrix_address "matrixAddress" , 
+			competent_department "competentDepartment" , 
+			project_area "projectArea" , 
+			building_area "buildingArea" , 
+			own_area "ownArea" , 
+			rent_area "rentArea" , 
+			commonality_area "commonalityArea" , 
+			personnel_quantity "personnelQuantity" , 
+			service_staff "serviceStaff" , 
+			instructor_quantity "instructorQuantity" , 
+			facilitating_agency "facilitatingAgency" , 
+			enterprise_quantity "enterpriseQuantity" , 
+			provide_place "providePlace" , 
+			optical_fiber "opticalFiber" , 
+			broadband "broadband" , 
+			wifi "wifi" , 
+			development_planning "developmentPlanning" , 
+			goal_of_development "goalOfDevelopment" , 
+			management_system "managementSystem" , 
+			fee_scale "feeScale" , 
+			development_planning_url "developmentPlanningUrl" , 
+			goal_of_development_url "goalOfDevelopmentUrl" , 
+			management_system_url "managementSystemUrl" , 
+			fee_scale_url "feeScaleUrl" , 
+			case  when information_service is null then '' else information_service end as "informationService" ,
+			case  when tutorship is null then '' else tutorship end as "tutorship" ,
+			case  when innovation_support is null then '' else innovation_support end as "innovationSupport" ,
+			case  when personnel_training is null then '' else personnel_training end as "personnelTraining" ,
+			case  when marketing is null then '' else marketing end as "marketing" ,
+			case  when financing_service is null then '' else financing_service end as "financingService" ,
+			case  when management_consultancy is null then '' else management_consultancy end as "managementConsultancy" ,
+			case  when other_service is null then '' else other_service end as "otherService" ,
+			model_selfreport "modelSelfreport" , 
+			type "type" , 
+			district_audit_type "districtAuditType" , 
+			district_audit_time "districtAuditTime" , 
+			district_audit_user "districtAuditUser" , 
+			third_party_audit_type "thirdPartyAuditType" , 
+			third_party_audit_time "thirdPartyAuditTime" , 
+			third_party_audit_user "thirdPartyAuditUser" , 
+			city_audit_type "cityAuditType" , 
+			city_audit_time "cityAuditTime" , 
+			city_audit_user "cityAuditUser" , 
+			opinion "opinion" , 
+			send_third_type "sendThirdType" , 
+			application_year "applicationYear" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_application 
+		WHERE 
+			user_code = #{userCode} 
+	</select>
+	
+	<!-- 区属推荐获取列表总数 -->
+	<select id="districtAuditGetListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(e.id) "count" 
+		FROM 
+			exemplary_matrix_application e 
+		INNER JOIN enterprise_info i ON e.user_code = i.user_code 
+		WHERE 
+			i.district = #{district}
+		AND 
+			e.type = '1' 
+		<!-- AND 
+			e.application_year = #{applicationYear} -->
+		<if test='type != "" and type != null'>
+			AND e.district_audit_type = #{type}
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	<!-- 区属推荐获取列表 -->
+	<select id="districtAuditGetList" resultType="map" parameterType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+		
+			a.user_code "userCode" , 
+			a.matrix_name "matrixName" , 
+			a.district_audit_time "districtAuditTime" , 
+			a.district_audit_type "districtAuditType" , 
+			a.city_audit_type "cityAuditType" , 
+			a.third_party_audit_type "thirdPartyAuditType" , 
+			a.contacter "contacter" , 
+			a.contact_phone "contactPhone" , 
+			a.update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_application a 
+			INNER JOIN enterprise_info i ON a.user_code = i.user_code  
+		WHERE 
+			i.district = #{district}
+		AND 
+			a.type = '1' 
+		<!-- AND 
+			a.application_year = #{applicationYear} -->
+		<if test='type != "" and type != null'>
+			AND a.district_audit_type = #{type}
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	<!-- 市级审核获取列表总数 -->
+	<select id="cityAuditGetListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM 
+			exemplary_matrix_application 
+		WHERE 
+			type = '1' 
+		AND 
+		    district_audit_type = '2' 
+		<!-- AND 
+			application_year = #{applicationYear} -->
+		<if test='type != "" and type != null'>
+			AND city_audit_type = #{type}
+		</if>
+		
+		<if test="matrixName != '' and matrixName != null">
+			AND matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	<!-- 市级审核获取列表 -->
+	<select id="cityAuditGetList" resultType="map" parameterType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			
+			a.user_code "userCode" , 
+			a.matrix_name "matrixName" , 
+			a.district_audit_time "districtAuditTime" , 
+			a.city_audit_type "cityAuditType" , 
+			a.city_audit_time "cityAuditTime" , 
+			a.third_party_audit_type "thirdPartyAuditType" , 
+			a.send_third_type "sendThirdType" , 
+			a.contacter "contacter" , 
+			a.contact_phone "contactPhone" , 
+			s.name "district" , 
+			a.update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_application a 
+			INNER JOIN enterprise_info i ON a.user_code = i.user_code  
+			INNER JOIN sys_code s ON i.district = s.code
+		WHERE 
+			a.type = '1' 
+		AND 
+		    a.district_audit_type = '2' 
+		<!-- AND 
+			a.application_year = #{applicationYear} -->
+		<if test='type != "" and type != null'>
+			AND a.city_audit_type = #{type}
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	
+	<!-- 第三方推荐获取列表总数 -->
+	<select id="thirdPartyAuditGetListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM 
+			exemplary_matrix_application 
+		WHERE 
+			type = '1' 
+		AND 
+		    district_audit_type = '2' 
+		<!-- AND 
+			application_year = #{applicationYear} -->
+		AND 
+			send_third_type = '1' 
+		AND 
+			city_audit_type != '3' 
+		<if test='type != "" and type != null'>
+			AND third_party_audit_type = #{type}
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	<!-- 第三方推荐获取列表 -->
+	<select id="thirdPartyAuditGetList" resultType="map" parameterType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			
+			a.user_code "userCode" , 
+			a.matrix_name "matrixName" , 
+			a.district_audit_time "districtAuditTime" , 
+			a.third_party_audit_type "thirdPartyAuditType" , 
+			a.third_party_audit_time "thirdPartyAuditTime" , 
+			a.city_audit_type "cityAuditType" , 
+			a.contacter "contacter" , 
+			a.contact_phone "contactPhone" , 
+			s.name "district" , 
+			a.update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_application a 
+			INNER JOIN enterprise_info i ON a.user_code = i.user_code  
+			INNER JOIN sys_code s ON i.district = s.code
+		WHERE 
+			a.type = '1' 
+		AND 
+		    a.district_audit_type = '2' 
+	   <!--  AND 
+			a.application_year = #{applicationYear}  -->
+		AND 
+			a.send_third_type = '1' 
+		AND 
+			city_audit_type != '3'
+		<if test='type == "" or type == null'>
+		</if>
+		<if test='type != "" and type != null and type == "0"'>
+			AND third_party_audit_type = #{type}
+		</if>
+		<if test='type != "" and type != null and type == "1"'>
+			AND third_party_audit_type = #{type}
+		</if>
+		<if test='type != "" and type != null and type == "2"'>
+			AND third_party_audit_type = #{type}
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+	</select>
+	
+	
+	
+	
+	<!-- 创业创新首页查询基地信息列表总数 -->
+	<select id="getMatrixForIndexByParamsCount" resultType="map" parameterType="map">
+		SELECT 
+			count(m.id) "count"
+		FROM exemplary_matrix_application m 
+		INNER JOIN enterprise_info e ON m.user_code = e.user_code 
+		INNER JOIN enterprise_publicity_info p ON m.user_code = p.user_code 
+		INNER JOIN sys_code s ON e.district = s.code 
+		WHERE 1=1 
+		AND m.city_audit_type = '2' 
+		<if test="code != '' and code != null">
+			AND s.code = #{code}
+		</if>
+	</select>
+	
+	
+	<!-- 创业创新首页查询基地信息列表 -->
+	<select id="getMatrixForIndexByParams" resultType="map" parameterType="map">
+		SELECT 
+			m.user_code "userCode" ,  
+			m.matrix_name "matrixName" , 
+			m.matrix_address "matrixAddress" , 
+			m.contacter "contacter" , 
+			m.contact_phone "contactPhone" , 
+			p.enterprise_logo_pic "enterpriseLogoPic" 
+		FROM exemplary_matrix_application m 
+		INNER JOIN enterprise_info e ON m.user_code = e.user_code 
+		INNER JOIN enterprise_publicity_info p ON m.user_code = p.user_code 
+		INNER JOIN sys_code s ON e.district = s.code 
+		WHERE 1=1 
+		AND m.city_audit_type = '2' 
+		<if test="code != '' and code != null">
+			AND s.code = #{code}
+		</if>
+	</select>
+	
+	<!-- 区级审核月度报表页面获取列表总数  -->
+	<select id="getMonthlyStatementListForAuditCount" parameterType="map" resultType="map">
+		SELECT
+			count(a.year) "count"
+		FROM 
+			(
+				SELECT 
+					DISTINCT(m.year) "year" ,
+					m.month "month" , 
+					m.user_code "userCode" , 
+					m.audit_type "auditType"  , 
+					e.matrix_name "matrixName"
+				FROM
+					monthly_service_data m 
+					INNER JOIN exemplary_matrix_application e ON m.user_code = e.user_code 
+					INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+				WHERE 
+					m.submit_type = '1' 
+					<!-- AND e.city_audit_type = '2' -->
+				<if test="district != '' and district != null">
+					AND i.district = #{district} 
+				</if>
+				<if test="matrixName != '' and matrixName != null">
+					AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+				</if>
+				<if test="year != '' and year != null">
+					AND m.year = #{year} 
+				</if>
+				<if test="month != '' and month != null">
+					AND m.month = #{month} 
+				</if>
+			)a
+	</select>
+	
+	<!-- 区级审核月度报表页面获取列表  -->
+	<select id="getMonthlyStatementListForAudit" parameterType="map" resultType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			
+			DISTINCT(m.year) "year" ,
+			m.month "month" , 
+			m.user_code "userCode" , 
+			m.audit_type "auditType"  , 
+			e.matrix_name "matrixName"
+		FROM
+			monthly_service_data m 
+			INNER JOIN exemplary_matrix_application e ON m.user_code = e.user_code 
+			INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		WHERE 
+			m.submit_type = '1'
+			<!-- AND e.city_audit_type = '2' -->
+		<if test="district != '' and district != null">
+			AND i.district = #{district} 
+		</if>
+		<if test="matrixName != '' and matrixName != null">
+			AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+		<if test="year != '' and year != null">
+			AND m.year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND m.month = #{month} 
+		</if>
+		ORDER BY year , month
+	</select>
+	
+	
+	<!-- 获取申报年限列表  -->
+	<select id="getApplicationYearList" resultType="map">
+		SELECT 
+			DISTINCT(application_year) "applicationYear" 
+		FROM 
+			exemplary_matrix_application 
+		ORDER BY 
+			"applicationYear" 
+	</select>
+	
+	<!-- 没有了申请年份，重新写的递交第三方方法 -->
+	<update id="sendToThirdParty" parameterType="exemplaryMatrixApplication">
+		UPDATE
+			exemplary_matrix_application 
+		SET 
+			send_third_type = #{sendThirdType}
+		WHERE 
+			district_audit_type = '2' 
+		 AND 
+			city_audit_type != '3'
+	</update>
+</mapper>

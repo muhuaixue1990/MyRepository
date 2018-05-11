@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.MonthlyOfficeEquipment">
+	
+	<!-- 插入示范基地——月度服务能力升级情况——办公设备表 -->
+	<insert id="saveMonthlyOfficeEquipment" parameterType="monthlyOfficeEquipment">
+		INSERT INTO monthly_office_equipment 
+		(
+			user_code , 
+			year , 
+			month , 
+			equipment_name ,  
+			count , 
+			invoice_no , 
+			audit_type , 
+			create_stamp , 
+			update_stamp ,
+			amount_invested , 
+			time_invested 
+		) VALUES (
+			#{userCode} , 
+			#{year} , 
+			#{month} , 
+			#{equipmentName} , 
+			#{count} , 
+			#{invoiceNo} , 
+			#{auditType} , 
+			#{createStamp} , 
+			#{updateStamp} ,
+			#{amountInvested} ,
+			#{timeInvested}
+		)
+	</insert>
+	
+	<!-- 更新示范基地——月度服务能力升级情况——办公设备表-->
+	<update id="updateMonthlyOfficeEquipment" parameterType="monthlyOfficeEquipment">
+		UPDATE monthly_office_equipment SET 
+		<if test="equipmentName != '' and equipmentName != null">
+			equipment_name = #{equipmentName} , 
+		</if>
+		<if test="count != '' and count != null">
+			count = #{count} , 
+		</if>
+		<if test="invoiceNo != '' and invoiceNo != null">
+			invoice_no = #{invoiceNo} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="amountInvested != '' and amountInvested != null">
+			amount_invested = #{amountInvested} , 
+		</if>
+		<if test="timeInvested != '' and timeInvested != null">
+			time_invested = #{timeInvested} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</update>
+	
+	<!-- 查询示范基地——月度服务能力升级情况——办公设备表-->
+	<select id="findMonthlyOfficeEquipment" parameterType="map" resultType="monthlyOfficeEquipment">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			equipment_name equipmentName ,   
+			count count , 
+			invoice_no invoiceNo , 
+			audit_type auditType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp ,
+			amount_invested amountInvested , 
+			time_invested timeInvested
+		FROM monthly_office_equipment 
+		WHERE id = #{id} AND user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</select>
+	
+	
+	
+	<!-- 通过参数查询月度服务能力升级数量 -->
+	<select id="getOfficeEquipmentCount" parameterType="map" resultType="map">
+		SELECT
+			count(a.year) "count"
+		FROM
+			(
+				SELECT DISTINCT
+					(year)year,
+					month month
+				FROM
+					monthly_office_equipment 
+				WHERE user_code = #{userCode} 
+				<if test="officeEquipmentYear != '' and officeEquipmentYear != null">
+					AND year = #{officeEquipmentYear} 
+				</if>
+				<if test="officeEquipmentMonth != '' and officeEquipmentMonth != null">
+					AND month = #{officeEquipmentMonth} 
+				</if>
+			)a
+	</select>
+	
+	
+	<!-- 通过参数查询月度服务能力升级详情-->
+	<select id="getOfficeEquipmentList" parameterType="map" resultType="monthlyOfficeEquipment">
+		SELECT DISTINCT
+			(year) "year",
+			month "month"
+		FROM
+			monthly_office_equipment 
+		WHERE user_code = #{userCode} 
+		<if test="officeEquipmentYear != '' and officeEquipmentYear != null">
+			AND year = #{officeEquipmentYear} 
+		</if>
+		<if test="officeEquipmentMonth != '' and officeEquipmentMonth != null">
+			AND month = #{officeEquipmentMonth} 
+		</if>
+	</select>
+	
+	
+	<!-- 查看月报查询办公设备升级总数 -->
+	<select id="getOfficeEquipmentListByCodeCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM monthly_office_equipment 
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	
+	<!-- 查看月报查询办公设备升级-->
+	<select id="getOfficeEquipmentListByCode" parameterType="map" resultType="monthlyOfficeEquipment">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			id id , 
+			user_code userCode , 
+			year year , 
+			month month , 
+			equipment_name equipmentName ,   
+			count count , 
+			invoice_no invoiceNo , 
+			audit_type auditType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp ,
+			amount_invested amountInvested , 
+			time_invested timeInvested
+		FROM monthly_office_equipment
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	<!-- 查询办公能力升级返回map -->
+	<select id="getOfficeEquipmentListByCodeForMap" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			id "id" , 
+			user_code "userCode" , 
+			year "year" , 
+			month "month" , 
+			equipment_name "equipmentName" ,   
+			count "count" , 
+			invoice_no "invoiceNo" , 
+			audit_type "auditType" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" ,
+			amount_invested "amountInvested" , 
+			time_invested "timeInvested"
+		FROM monthly_office_equipment
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND month IN (1,2,3,4)
+		</if>
+	</select>
+	
+	<delete id="deleteMonthlyOfficeEquipmentByParams" parameterType="map">
+		DELETE FROM monthly_office_equipment WHERE user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</delete>
+	
+</mapper>

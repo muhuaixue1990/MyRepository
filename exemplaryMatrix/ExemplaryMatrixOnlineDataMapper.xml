@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixOnlineData">
+	
+	<!-- 插入入驻企业信息 -->
+	<insert id="insertExemplaryMatrixOnlineData" parameterType="exemplaryMatrixOnlineData" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_online_data 
+		(
+			service_id ,
+			service_type ,
+	        user_code ,
+			service_year ,
+			service_quarter ,
+			service_name ,
+			service_time ,
+			service_address ,
+			service_sort ,
+			have_type ,
+	        create_stamp ,
+	        update_stamp ,
+	        line_type
+		) VALUES (
+			#{serviceId},
+			#{serviceType},
+			#{userCode},
+			#{serviceYear},
+			#{serviceQuarter},
+			#{serviceName},
+			#{serviceTime},
+			#{serviceAddress},
+			#{serviceSort},
+			#{haveType},
+			#{createStamp},
+			#{updateStamp},
+			#{lineType}
+		)
+	</insert>
+	
+	<select id="findExemplaryMatrixOnlineDataByParam" parameterType="map" resultType="exemplaryMatrixOnlineData">
+		SELECT	
+			id "id" ,
+			service_id "serviceId",
+			service_type "serviceType",
+	        user_code "userCode",
+			service_year "serviceYear",
+			service_quarter "serviceQuarter",
+			service_name "serviceName",
+			service_time "serviceTime",
+			service_address "serviceAddress",
+			service_sort "serviceSort",
+			have_type "haveType",
+	        create_stamp "createStamp",
+	        update_stamp "updateStamp",
+	        line_type "lineType"
+	    FROM 
+	    	exemplary_matrix_online_data
+	    WHERE 
+	    	user_code = #{userCode} 
+	    AND
+	    	service_year = #{serviceYear}
+		<if test="quarter != '' and quarter != null and quarter == 1">
+			AND
+				service_quarter IN (1)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 2">
+			AND
+				service_quarter IN (1,2)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 3">
+			AND
+				service_quarter IN (1,2,3)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 4">
+			AND
+				service_quarter IN (1,2,3,4)
+		</if>
+		<if test="serviceType != '' and serviceType != null">
+			AND
+				service_sort = #{serviceType}
+		</if>
+		<if test="lineType != '' and lineType != null">
+			AND
+				line_type = #{lineType}
+		</if>
+	</select>
+	
+	<select id="findOnlineDataById" parameterType="map" resultType="exemplaryMatrixOnlineData">
+		SELECT	
+			id "id" ,
+			service_id "serviceId",
+			service_type "serviceType",
+	        user_code "userCode",
+			service_year "serviceYear",
+			service_quarter "serviceQuarter",
+			service_name "serviceName",
+			service_time "serviceTime",
+			service_address "serviceAddress",
+			service_sort "serviceSort",
+			have_type "haveType",
+	        create_stamp "createStamp",
+	        update_stamp "updateStamp"
+	    FROM 
+	    	exemplary_matrix_online_data
+	    WHERE 
+	    	id = #{serviceId} 
+	</select>
+	
+	<select id="findOneExemplaryMatrixOnlineData" parameterType="exemplaryMatrixOnlineData" resultType="exemplaryMatrixOnlineData">
+		SELECT	
+			id "id" ,
+			service_id "serviceId",
+			service_type "serviceType",
+	        user_code "userCode",
+			service_year "serviceYear",
+			service_quarter "serviceQuarter",
+			service_name "serviceName",
+			service_time "serviceTime",
+			service_address "serviceAddress",
+			service_sort "serviceSort",
+			have_type "haveType",
+	        create_stamp "createStamp",
+	        update_stamp "updateStamp",
+	        line_type "lineType"
+	    FROM 
+	    	exemplary_matrix_online_data
+	    WHERE 
+	    	service_type = #{serviceType} 
+	    AND
+	    	service_id = #{serviceId}
+	    AND 
+	    	line_type = #{lineType}
+	</select>
+	
+	<select id="findOnlineDataListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(*) "count"
+		FROM 
+			exemplary_matrix_online_data
+		WHERE 
+			user_code = #{userCode}
+		AND
+			service_year = #{serviceYear}
+		AND
+			service_quarter = #{serviceQuarter}
+	</select>
+	
+	<select id="findOnlineDataList" parameterType="map" resultType="exemplaryMatrixOnlineData">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			d.id "id" ,
+			d.service_id "serviceId",
+			d.service_type "serviceType",
+	        d.user_code "userCode",
+			d.service_year "serviceYear",
+			d.service_quarter "serviceQuarter",
+			d.service_name "serviceName",
+			d.service_time "serviceTime",
+			d.service_address "serviceAddress",
+			s.name "serviceSort",
+			d.have_type "haveType",
+	        d.create_stamp "createStamp",
+	        d.update_stamp "updateStamp",
+	        d.line_type "lineType" 
+		FROM 
+			exemplary_matrix_online_data d
+		INNER JOIN 
+				sys_code s ON d.service_sort = s.code
+		WHERE 
+			d.user_code = #{userCode}
+		AND
+			d.service_year = #{serviceYear}
+		AND
+			d.service_quarter = #{serviceQuarter}
+		ORDER BY d.line_type DESC , d.create_stamp 
+	</select>
+	
+	<update id="updateOnlineDataTypeByServiceId" parameterType="exemplaryMatrixOnlineData">
+		UPDATE exemplary_matrix_online_data SET 
+			<if test="serviceId != '' and serviceId != null">
+				service_id = #{serviceId} , 
+			</if>
+			<if test="serviceType != '' and serviceType != null">
+				service_type = #{serviceType} , 
+			</if>
+			<if test="userCode != '' and userCode != null">
+				user_code = #{userCode} , 
+			</if>
+			<if test="serviceYear != '' and serviceYear != null">
+				service_year = #{serviceYear} , 
+			</if>
+			<if test="serviceQuarter != '' and serviceQuarter != null">
+				service_quarter = #{serviceQuarter} , 
+			</if>
+			<if test="serviceName != '' and serviceName != null">
+				service_name = #{serviceName} , 
+			</if>
+			<if test="serviceTime != '' and serviceTime != null">
+				service_time = #{serviceTime} , 
+			</if>
+			<if test="serviceAddress != '' and serviceAddress != null">
+				service_address = #{serviceAddress} , 
+			</if>
+			<if test="serviceSort != '' and serviceSort != null">
+				service_sort = #{serviceSort} , 
+			</if>
+			<if test="haveType != '' and haveType != null">
+				have_type = #{haveType} , 
+			</if>
+			<if test="createStamp != '' and createStamp != null">
+				create_stamp = #{createStamp} , 
+			</if>
+			<if test="lineType != '' and lineType != null">
+				line_type = #{lineType} , 
+			</if>
+			update_stamp = #{updateStamp}
+		WHERE 
+			id = #{id}
+	</update>
+	
+	<delete id="deleteOnlineDataById" parameterType="map">
+		DELETE FROM exemplary_matrix_online_data WHERE id = #{serviceId}
+	</delete>
+	
+	
+	
+</mapper>

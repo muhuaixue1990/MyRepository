@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.QuarterStatement">
+	
+	<!-- 插入示范基地——季度报表 -->
+	<insert id="insertQuarterStatement" parameterType="quarterStatement">
+		INSERT INTO quarter_statement 
+		(
+			user_code , 
+			year , 
+			quarter , 
+			enterprise_count , 
+			total_assets_e , 
+			income_e , 
+			profit_e , 
+			taxes_e , 
+			personnel_quantity_e , 
+			floor_space_e , 
+			total_assets , 
+			income , 
+			profit , 
+			taxes , 
+			personnel_quantity , 
+			tutor_quantity , 
+			audit_type , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{year} , 
+			#{quarter} , 
+			#{enterpriseCount} , 
+			#{totalAssetsE} , 
+			#{incomeE} , 
+			#{profitE} , 
+			#{taxesE} , 
+			#{personnelQuantityE} , 
+			#{floorSpaceE} , 
+			#{totalAssets} , 
+			#{income} , 
+			#{profit} , 
+			#{taxes} , 
+			#{personnelQuantity} , 
+			#{tutorQuantity} , 
+			#{auditType}
+			#{createStamp} , 
+			#{updateStamp} 
+		)
+	</insert>
+	
+	<!-- 更新示范基地——季度报表-->
+	<update id="updateQuarterStatement1" parameterType="quarterStatement">
+		UPDATE quarter_statement SET 
+		<if test="enterpriseCount != '' and enterpriseCount != null">
+			enterprise_count = #{enterpriseCount} , 
+		</if>
+		<if test="totalAssetsE != '' and totalAssetsE != null">
+			total_assets_e = #{totalAssetsE} , 
+		</if>
+		<if test="incomeE != '' and incomeE != null">
+			income_e = #{incomeE} , 
+		</if>
+		<if test="profitE != '' and profitE != null">
+			profit_e = #{profitE} , 
+		</if>
+		<if test="taxesE != '' and taxesE != null">
+			taxes_e = #{taxesE} , 
+		</if>
+		<if test="personnelQuantityE != '' and personnelQuantityE != null">
+			personnel_quantity_e = #{personnelQuantityE} , 
+		</if>
+		<if test="floorSpaceE != '' and floorSpaceE != null">
+			floor_space_e = #{floorSpaceE} , 
+		</if>
+		<if test="totalAssets != '' and totalAssets != null">
+			total_assets = #{totalAssets} , 
+		</if>
+		<if test="income != '' and income != null">
+			income = #{income} , 
+		</if>
+		<if test="profit != '' and profit != null">
+			profit = #{profit} , 
+		</if>
+		<if test="taxes != '' and taxes != null">
+			taxes = #{taxes} , 
+		</if>
+		<if test="personnelQuantity != '' and personnelQuantity != null">
+			personnel_quantity = #{personnelQuantity} , 
+		</if>
+		<if test="tutorQuantity != '' and tutorQuantity != null">
+			tutor_quantity = #{tutorQuantity} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="smeCount != '' and smeCount != null">
+			sme_count = #{smeCount} , 
+		</if>
+		<if test="incomeProportion != '' and incomeProportion != null">
+			income_proportion = #{incomeProportion} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE id = #{id} AND user_code = #{userCode} AND year = #{year} AND quarter = #{quarter} 
+	</update>
+	
+	<!-- 查询示范基地——季度报表-->
+	<select id="findQuarterStatement" parameterType="map" resultType="quarterStatement">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			year year , 
+			quarter quarter , 
+			enterprise_count enterpriseCount , 
+			total_assets_e totalAssetsE , 
+			income_e incomeE , 
+			profit_e profitE , 
+			taxes_e taxesE , 
+			personnel_quantity_e personnelQuantityE , 
+			floor_space_e floorSpaceE , 
+			total_assets totalAssets , 
+			income income , 
+			profit profit , 
+			taxes taxes , 
+			personnel_quantity personnelQuantity , 
+			tutor_quantity tutorQuantity , 
+			audit_type auditType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM quarter_statement 
+		WHERE id = #{id} AND user_code = #{userCode} AND year = #{year} AND quarter = #{quarter} 
+	</select>
+	
+	
+	<!-- 查询季度报表列表数量 -->
+	<select id="getQuarterStatementCount" parameterType="map" resultType="map">
+		SELECT 
+			count(q.id) "count" 
+		FROM quarter_statement q 
+		WHERE q.user_code = #{userCode} 
+		<if test="year != '' and year != null">
+			AND q.year = #{year} 
+		</if>
+		<if test="quarter != '' and quarter != null">
+			AND q.quarter = #{quarter} 
+		</if>
+	</select>
+	
+	
+	<!-- 查询季度报表详情 -->
+	<select id="getQuarterStatementList" parameterType="map" resultType="quarterStatement">
+		SELECT 
+			id "id" , 
+			user_code "userCode" , 
+			year  "year" , 
+			quarter  "quarter" , 
+			enterprise_count "enterpriseCount" , 
+			total_assets_e "totalAssetsE" , 
+			income_e "incomeE" , 
+			profit_e "profitE" , 
+			taxes_e "taxesE" , 
+			personnel_quantity_e "personnelQuantityE" , 
+			floor_space_e "floorSpaceE" , 
+			total_assets "totalAssets" , 
+			income "income" , 
+			profit "profit" , 
+			taxes "taxes" , 
+			personnel_quantity "personnelQuantity" , 
+			tutor_quantity "tutorQuantity" , 
+			audit_type "auditType" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" ,
+			sme_count "smeCount" , 
+			income_proportion "incomeProportion"
+		FROM quarter_statement
+		WHERE user_code = #{userCode} 
+		<if test="year != '' and year != null">
+			AND  year  = #{year} 
+		</if>
+		<!-- <if test="quarter != '' and quarter != null and quarter == 1">
+			AND
+				quarter IN (1)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 2">
+			AND
+				quarter IN (1,2)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 3">
+			AND
+				quarter IN (1,2,3)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 4">
+			AND
+				quarter IN (1,2,3,4)
+		</if> -->
+		<if test="quarter != '' and quarter != null" >
+			AND
+				quarter = #{quarter}
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND  audit_type  = #{auditType} 
+		</if>
+		<if test="allYear != '' and allYear != null">
+			AND
+				quarter IN (1,2,3,4)
+		</if>
+		ORDER BY quarter DESC
+	</select>
+	
+	<!-- 新增季度报表 -->
+	<insert id="saveQuarterStatement" parameterType="quarterStatement">
+		INSERT INTO quarter_statement 
+		(
+			user_code , 
+			year , 
+			quarter , 
+			enterprise_count , 
+			total_assets_e , 
+			income_e , 
+			profit_e , 
+			taxes_e , 
+			personnel_quantity_e , 
+			floor_space_e , 
+			total_assets , 
+			income , 
+			profit , 
+			taxes , 
+			personnel_quantity , 
+			tutor_quantity , 
+			audit_type , 
+			create_stamp , 
+			update_stamp ,
+			sme_count , 
+			income_proportion 
+		) VALUES (
+			#{userCode} , 
+			#{year} , 
+			#{quarter} , 
+			#{enterpriseCount} , 
+			#{totalAssetsE} , 
+			#{incomeE} , 
+			#{profitE} , 
+			#{taxesE} , 
+			#{personnelQuantityE} , 
+			#{floorSpaceE} , 
+			#{totalAssets} , 
+			#{income} , 
+			#{profit} , 
+			#{taxes} , 
+			#{personnelQuantity} , 
+			#{tutorQuantity} , 
+			#{auditType} , 
+			#{createStamp} , 
+			#{updateStamp} ,
+			#{smeCount} , 
+			#{incomeProportion}
+		)
+	</insert>
+	
+	<!-- 更新季度报表 -->
+	<update id="updateQuarterStatement" parameterType="quarterStatement">
+		UPDATE quarter_statement SET 
+		<if test="enterpriseCount != '' and enterpriseCount != null">
+			enterprise_count = #{enterpriseCount} , 
+		</if>
+		<if test="totalAssetsE != '' and totalAssetsE != null">
+			total_assets_e = #{totalAssetsE} , 
+		</if>
+		<if test="incomeE != '' and incomeE != null">
+			income_e = #{incomeE} , 
+		</if>
+		<if test="profitE != '' and profitE != null">
+			profit_e = #{profitE} , 
+		</if>
+		<if test="taxesE != '' and taxesE != null">
+			taxes_e = #{taxesE} , 
+		</if>
+		<if test="personnelQuantityE != '' and personnelQuantityE != null">
+			personnel_quantity_e = #{personnelQuantityE} , 
+		</if>
+		<if test="floorSpaceE != '' and floorSpaceE != null">
+			floor_space_e = #{floorSpaceE} , 
+		</if>
+		<if test="totalAssets != '' and totalAssets != null">
+			total_assets = #{totalAssets} , 
+		</if>
+		<if test="income != '' and income != null">
+			income = #{income} , 
+		</if>
+		<if test="profit != '' and profit != null">
+			profit = #{profit} , 
+		</if>
+		<if test="taxes != '' and taxes != null">
+			taxes = #{taxes} , 
+		</if>
+		<if test="personnelQuantity != '' and personnelQuantity != null">
+			personnel_quantity = #{personnelQuantity} , 
+		</if>
+		<if test="tutorQuantity != '' and tutorQuantity != null">
+			tutor_quantity = #{tutorQuantity} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="smeCount != '' and smeCount != null">
+			sme_count = #{smeCount} , 
+		</if>
+		<if test="incomeProportion != '' and incomeProportion != null">
+			income_proportion = #{incomeProportion} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND year = #{year} AND quarter = #{quarter} 
+	</update>
+	
+	<!-- 通过年份和季度查询季度报表  -->
+	<select id="findStatementByParam" parameterType="map" resultType="quarterStatement">
+		SELECT 
+			id id , 
+			user_code userCode , 
+		 	year  year , 
+		 	quarter  quarter , 
+			enterprise_count enterpriseCount , 
+			total_assets_e totalAssetsE , 
+			income_e incomeE , 
+			profit_e profitE , 
+			taxes_e taxesE , 
+			personnel_quantity_e personnelQuantityE , 
+			floor_space_e floorSpaceE , 
+			total_assets totalAssets , 
+			income income , 
+			profit profit , 
+			taxes taxes , 
+			personnel_quantity personnelQuantity , 
+			tutor_quantity tutorQuantity , 
+			audit_type auditType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp ,
+			sme_count smeCount , 
+			income_proportion incomeProportion 
+		FROM quarter_statement
+		WHERE 1=1  
+		<if test="id != '' and id != null">
+			AND id = #{id} 
+		</if>
+		<if test="userCode != '' and userCode != null">
+			AND user_code = #{userCode} 
+		</if>
+		<if test="year != '' and year != null">
+			AND  year  = #{year} 
+		</if>
+		<if test="quarter != '' and quarter != null">
+			AND  quarter  = #{quarter} 
+		</if>
+				
+	</select>
+	
+	<!-- 查看季度报表时获取哪年填写了报表 -->
+	<select id="getQuarterStatementYears" parameterType="map" resultType="map">
+		SELECT DISTINCT
+			(year) "year" 
+		FROM
+			quarter_statement 
+		WHERE user_code = #{userCode} 
+	</select>
+	
+	
+	<!-- 2018示范基地新增 -->
+	<select id="findStatementAuditListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(a.id) "count"
+		FROM 
+			(
+				SELECT 
+					e.id , 
+					e.matrix_name , 
+					q.year , 
+					q.quarter 
+				FROM 
+					exemplary_matrix e 
+				INNER JOIN exemplary_matrix_application ea ON e.user_code = ea.user_code
+				INNER JOIN quarter_statement q ON e.user_code = q.user_code 
+				INNER JOIN enterprise_info ei ON e.user_code = ei.user_code 
+				RIGHT JOIN exemplary_matrix_service_data d ON q.year = d.service_year AND q.quarter=d.service_quarter AND q.user_code = d.user_code
+				WHERE
+					d.submit_type = '1'
+					<if test="satementList != '' and satementList != null">
+						AND d.audit_type = '0'
+					</if>
+					<if test="matrixName != '' and matrixName != null">
+						AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+					</if>
+					<if test="year != '' and year != null">
+						AND q.year = #{year} 
+					</if>
+					<if test="quarter != '' and quarter != null">
+						AND q.quarter = #{quarter}
+					</if>
+					<if test="district != '' and district != null">
+						AND ei.district = #{district}
+					</if>
+					<if test="auditType != '' and auditType != null">
+						AND q.audit_type = #{auditType}
+					</if>
+			) a
+	</select>
+	
+	<!-- 获取区级报表审核列表 -->
+	<select id="findStatementAuditList" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			DISTINCT(q.year) "year" ,
+			e.id "id" ,
+			ea.id "applicationId" ,   
+			e.user_code "userCode" , 
+			e.matrix_name "matrixName" ,  
+			q.quarter "quarter" , 
+			q.floor_space_e "floorSpaceE" , 
+			q.personnel_quantity "personnelQuantity" , 
+			q.tutor_quantity "tutorQuantity" , 
+			q.enterprise_count "enterpriseCount" , 
+			q.sme_count "smeCount" , 
+			q.personnel_quantity_e "personnelQuantityE" , 
+			q.total_assets "totalAssets" , 
+			q.income "income" , 
+			q.income_proportion "incomeProportion" , 
+			q.audit_type "auditType" 
+		FROM 
+			exemplary_matrix e 
+		INNER JOIN exemplary_matrix_application ea ON e.user_code = ea.user_code
+		INNER JOIN quarter_statement q ON e.user_code = q.user_code 
+		INNER JOIN enterprise_info ei ON e.user_code = ei.user_code 
+		RIGHT JOIN exemplary_matrix_service_data d ON q.year = d.service_year AND q.quarter=d.service_quarter AND q.user_code = d.user_code
+		WHERE
+			d.submit_type = '1'
+			<if test="satementList != '' and satementList != null">
+				AND d.audit_type = '0'
+			</if>
+			<if test="userCode != '' and userCode != null">
+				AND q.user_code = #{userCode}
+			</if>
+			<if test="matrixName != '' and matrixName != null">
+				AND e.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+			</if>
+			<if test="year != '' and year != null">
+				AND q.year = #{year} 
+			</if>
+			<if test="quarter != '' and quarter != null">
+				AND q.quarter = #{quarter}
+			</if>
+			<if test="district != '' and district != null">
+				AND ei.district = #{district}
+			</if>
+			<if test="auditType != '' and auditType != null">
+				AND q.audit_type = #{auditType}
+			</if>
+	</select>
+	
+	<!-- 根据id获取申请表信息 -->
+	<select id="findApplicationById" parameterType="map" resultType="exemplaryMatrixApplication">
+		SELECT 
+			id "id",
+			information_service "informationService" , 
+			tutorship "tutorship" , 
+			innovation_support "innovationSupport" , 
+			personnel_training "personnelTraining" , 
+			marketing "marketing" , 
+			financing_service "financingService" , 
+			management_consultancy "managementConsultancy" , 
+			other_service "otherService"
+		FROM 
+			exemplary_matrix_application
+		WHERE 
+			id = #{applicationId}
+	</select>
+</mapper>

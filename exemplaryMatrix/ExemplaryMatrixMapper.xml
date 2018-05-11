@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrix">
+	
+	<!-- 插入示范基地申请表 -->
+	<insert id="insertExemplaryMatrix" parameterType="exemplaryMatrix" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix 
+		(
+			user_code , 
+			contacter , 
+			contact_phone , 
+			matrix_name , 
+			monthly_statement_status , 
+			application_year , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{contacter} , 
+			#{contactPhone} , 
+			#{matrixName} , 
+			#{monthlyStatementStatus} , 
+			#{applicationYear} , 
+			#{createStamp} , 
+			#{updateStamp}
+		)
+	</insert>
+	
+	<!-- 更新示范基地申请表 -->
+	<update id="updateExemplaryMatrix" parameterType="exemplaryMatrix">
+		UPDATE exemplary_matrix SET 
+		<if test="contacter != '' and contacter != null">
+			contacter = #{contacter} , 
+		</if>
+		<if test="contactPhone != '' and contactPhone != null">
+			contact_phone = #{contactPhone} , 
+		</if>
+		
+		<if test="matrixName != '' and matrixName != null">
+			matrix_name = #{matrixName} , 
+		</if>
+		<if test="monthlyStatementStatus != '' and monthlyStatementStatus != null">
+			monthly_statement_status = #{monthlyStatementStatus} , 
+		</if>
+		<if test="applicationYear != '' and applicationYear != null">
+			application_year = #{applicationYear} , 
+		</if>
+			update_stamp = #{updateStamp}
+		WHERE
+			1=1 
+			<if test="userCode != '' and userCode != null">
+			AND user_code = #{userCode} 
+			</if>
+	</update>
+	
+	<!-- 查询示范基地申请表 -->
+	<select id="findExemplaryMatrixByUserCode" parameterType="map" resultType="exemplaryMatrix">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			contacter contacter , 
+			contact_phone contactPhone , 
+			matrix_name matrixName , 
+			monthly_statement_status monthlyStatementStatus , 
+			application_year applicationYear , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM 
+			exemplary_matrix
+		WHERE
+			 user_code = #{userCode}
+	</select>
+	
+	<!-- 查询哪些示范基地填写了本月月报，并将填写的示范基地月报填写状态置为1 -->
+	<!-- 2018新版增加条件，提交了季度报表的才算已经填写的才更新为1 -->
+	<update id="updateMonthlyStatementStatus" parameterType="map">
+		UPDATE 
+			exemplary_matrix 
+		SET 
+			monthly_statement_status = '1' 
+		WHERE 
+			user_code IN 
+			(SELECT 
+				distinct(user_code) 
+			 FROM 
+			 	exemplary_matrix_service_data 
+			 WHERE 
+			 	service_year = #{year} 
+			 	AND service_quarter = #{quarter}
+			 	AND submit_type = '1'
+			 )
+	</update>
+	
+	<!-- 未填写当前月份月报的示范基地数量 -->
+	<select id="getSumForMatrixNoMonthly" resultType="map">
+		SELECT 
+			count(em.id) "count"
+		FROM 
+			exemplary_matrix em 
+		INNER JOIN enterprise_info ei ON em.user_code = ei.user_code
+		WHERE 
+			em.monthly_statement_status = '0' 
+			<if test="district != '' and district != null">
+				AND ei.district = #{district}
+			</if>
+	</select>
+	
+	<!-- 获取未填写当前月份月报的示范基地详情 -->
+	<select id="getMatrixNoMonthlyDetailList" parameterType="map" resultType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			distinct
+			em.id "id" , 
+			em.user_code "userCode" , 
+			em.contacter "contacter" , 
+			em.contact_phone "contactPhone" , 
+			em.matrix_name "matrixName" , 
+			em.monthly_statement_status "monthlyStatementStatus" , 
+			em.application_year "applicationYear" , 
+			em.create_stamp "createStamp" , 
+			em.update_stamp "updateStamp" , 
+			sc.name "district" 
+		FROM 
+			exemplary_matrix em 
+		INNER JOIN enterprise_info ei ON em.user_code = ei.user_code 
+		INNER JOIN sys_code sc ON sc.code = ei.district
+		WHERE 
+			em.monthly_statement_status = '0' 
+			<if test="district != '' and district != null">
+				AND ei.district = #{district}
+			</if>
+	</select>
+	
+	<!-- 2018新需求，根据userCode删除基地表里的信息 -->
+	<delete id="deleteExemplaryMatrixInfoByUserCode" parameterType="exemplaryMatrix">
+		DELETE FROM exemplary_matrix WHERE user_code = #{userCode}
+	</delete>
+	
+	<!-- 通过userCode获取基地基本信息 -->
+	<select id="findMatrixBaseInfoByUserCode" parameterType="map" resultType="map">
+		SELECT 
+			e.matrix_name "matrixName" , 
+			e.contacter "contacter" , 
+			e.contact_phone "contactPhone" , 
+			i.company_name "companyName" 
+		FROM 
+			exemplary_matrix e 
+		INNER JOIN 
+			enterprise_info i ON e.user_code = i.user_code
+		WHERE 
+			e.user_code = #{userCode}
+	</select>
+	
+	<!-- 数据统计页面，通过参数获取基地信息 -->
+	<select id="findMatrixInfoByParams" parameterType="map" resultType="map">
+		SELECT
+			DISTINCT(a.user_code) "userCode"  , 
+			m.service_year "serviceYear" ,	
+			m.service_quarter "serviceQuarter" ,
+			m.activity_class "serviceCode" 
+		FROM
+			exemplary_matrix_service_data m 
+		INNER JOIN exemplary_matrix a ON m.user_code = a.user_code 
+		INNER JOIN sys_code s ON m.activity_class  = s.code 
+		INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		INNER JOIN sys_code c ON i.district = c.code 
+		WHERE 
+			<!-- a.city_audit_type = '2'	
+		AND -->
+			m.audit_type = '1' 
+			<if test="matrixName != '' and matrixName != null">
+				AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+			</if>
+			<if test="serviceType != '' and serviceType != null">
+				AND m.activity_class = #{serviceType}
+			</if>
+			<if test="year != '' and year != null">
+				AND m.service_year = #{year}
+			</if>
+			<if test="quarter != '' and quarter != null">
+				AND m.service_quarter = #{quarter}
+			</if>
+			<if test="district != '' and district != null">
+				AND i.district = #{district}
+			</if>
+	</select>
+	
+	<select id="findExemplaryMatrixsByDistrict" parameterType="map" resultType="exemplaryMatrix">
+		SELECT 
+			m.id id , 
+			m.user_code userCode , 
+			m.contacter contacter , 
+			m.contact_phone contactPhone , 
+			m.matrix_name matrixName , 
+			m.monthly_statement_status monthlyStatementStatus , 
+			m.application_year applicationYear , 
+			m.create_stamp createStamp , 
+			m.update_stamp updateStamp 
+		FROM 
+			exemplary_matrix m
+		INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		WHERE
+			1=1
+			<if test="district != '' and district != null">
+				AND i.district = #{district}
+			</if>
+	</select>
+	
+	<select id="findDistrictCountByParams" parameterType="map" resultType="map">
+		SELECT 
+			count(*) "count"
+		FROM 
+			sys_code
+		WHERE
+			group = 'district'
+		AND
+			parent = '120000' 
+		<if test="district != '' and district != null">
+			AND code = #{district}
+		</if>
+	</select>
+	<select id="findDistrictListByParams" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+		
+			code "code" , 
+			name "name" 
+		FROM 
+			sys_code
+		WHERE
+			group = 'district'
+		AND
+			parent = '120000' 
+		<if test="district != '' and district != null">
+			AND code = #{district}
+		</if>
+	</select>
+	
+	<select id="findDistrictListByParamsForExport" parameterType="map" resultType="java.util.LinkedHashMap">
+		SELECT 
+			code "code" , 
+			name "name" 
+		FROM 
+			sys_code
+		WHERE
+			group = 'district'
+		AND
+			parent = '120000' 
+		<if test="district != '' and district != null">
+			AND code = #{district}
+		</if>
+	</select>
+	
+</mapper>

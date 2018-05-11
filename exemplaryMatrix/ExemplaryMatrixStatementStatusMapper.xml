@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixStatementStatus">
+	
+	<!-- 通过userCode year quarter查询报表状态列表 -->
+	<select id="getStatusListByParams" parameterType="map" resultType="exemplaryMatrixStatementStatus">
+		SELECT 
+			id "id" , 
+			user_code "userCode" , 
+			service_year "serviceYear" , 
+			service_quarter "serviceQuarter" , 
+			statement_name "statementName" , 
+			status "status" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_statement_status
+		WHERE 
+			user_code = #{userCode}
+		AND 
+			service_year = #{serviceYear} 
+		AND 
+			service_quarter = #{serviceQuarter}
+	</select>
+	
+	<!-- 通过userCode year quarter 表格名称 查询表格状态 -->
+	<select id="getStatementStatusByParams" parameterType="exemplaryMatrixStatementStatus" resultType="exemplaryMatrixStatementStatus">
+		SELECT 
+			id "id" , 
+			user_code "userCode" , 
+			service_year "serviceYear" , 
+			service_quarter "serviceQuarter" , 
+			statement_name "statementName" , 
+			status "status" , 
+			create_stamp "createStamp" , 
+			update_stamp "updateStamp" 
+		FROM 
+			exemplary_matrix_statement_status
+		WHERE 
+			user_code = #{userCode}
+		AND 
+			service_year = #{serviceYear} 
+		AND 
+			service_quarter = #{serviceQuarter}
+		AND
+			statement_name = #{statementName}
+	</select>
+	
+	<!-- 插入报表状态 -->
+	<insert id="insertStatementStatus" parameterType="exemplaryMatrixStatementStatus" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_statement_status 
+		(
+			user_code , 
+			service_year , 
+			service_quarter , 
+			statement_name , 
+			status , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{serviceYear} , 
+			#{serviceQuarter} , 
+			#{statementName} , 
+			#{status} , 
+			#{createStamp} , 
+			#{updateStamp} 
+		)
+	</insert>
+	
+	<update id="updateStatementStatus" parameterType="exemplaryMatrixStatementStatus">
+		UPDATE
+			exemplary_matrix_statement_status 
+		SET 
+			status = #{status} , 
+			update_stamp = #{updateStamp}
+		WHERE 
+			user_code = #{userCode}
+		AND 
+			service_year = #{serviceYear} 
+		AND 
+			service_quarter = #{serviceQuarter}
+		AND
+			statement_name = #{statementName}
+	
+	</update>
+	
+</mapper>

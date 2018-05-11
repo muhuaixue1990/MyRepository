@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.MonthlyServiceData">
+	
+	<!-- 插入示范基地——月度服务数据表 -->
+	<insert id="saveMonthlyServiceData" parameterType="monthlyServiceData">
+		INSERT INTO monthly_service_data 
+		(
+			user_code , 
+			year , 
+			month , 
+			service_class , 
+			time , 
+			site , 
+			title , 
+			number , 
+			picture , 
+			sketch , 
+			audit_type , 
+			submit_type , 
+			create_stamp , 
+			update_stamp ,
+			enter_number 
+		) VALUES (
+			#{userCode} , 
+			#{year} , 
+			#{month} , 
+			#{serviceClass} , 
+			#{time} , 
+			#{site} , 
+			#{title} , 
+			#{number} , 
+			#{picture} , 
+			#{sketch} , 
+			#{auditType} , 
+			#{submitType} , 
+			#{createStamp} , 
+			#{updateStamp} , 
+			#{enterNumber}
+		)
+	</insert>
+	
+	<!-- 更新示范基地——月度服务数据表-->
+	<update id="updateMonthlyServiceDataById" parameterType="monthlyServiceData">
+		UPDATE monthly_service_data SET 
+		<if test="year != '' and year != null">
+			year = #{year} , 
+		</if>
+		<if test="month != '' and month != null">
+			month = #{month} , 
+		</if>
+		<if test="serviceClass != '' and serviceClass != null">
+			service_class = #{serviceClass} , 
+		</if>
+		<if test="time != '' and time != null">
+			time = #{time} , 
+		</if>
+		<if test="site != '' and site != null">
+			site = #{site} , 
+		</if>
+		<if test="title != '' and title != null">
+			title = #{title} , 
+		</if>
+		<if test="number != '' and number != null">
+			number = #{number} , 
+		</if>
+		<if test="picture != '' and picture != null">
+			picture = #{picture} , 
+		</if>
+		<if test="sketch != '' and sketch != null">
+			sketch = #{sketch} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="submitType != '' and submitType != null">
+			submit_type = #{submitType} , 
+		</if>
+		<if test="enterNumber != '' and enterNumber != null">
+			enter_number = #{enterNumber} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE id = #{id} 
+	</update>
+	
+	<!-- 查询示范基地——月度服务数据表-->
+	<select id="findMonthlyServiceData" parameterType="map" resultType="monthlyServiceData">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			year year , 
+			month month , 
+			service_class serviceClass , 
+			time time , 
+			site site , 
+			title title , 
+			number number , 
+			picture picture , 
+			sketch sketch , 
+			audit_type auditType , 
+			submit_type submitType , 
+			create_stamp createStamp , 
+			update_stamp updateStamp , 
+			enter_number enterNumber 
+		FROM monthly_service_data 
+		WHERE id = #{id} AND user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</select>
+	
+	<!-- 通过参数查询月度服务数据数量 -->
+	<select id="getServiceDataCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM monthly_service_data 
+		WHERE user_code = #{userCode} 
+		<if test="serviceDataYear != '' and serviceDataYear != null">
+			AND year = #{serviceDataYear} 
+		</if>
+		<if test="serviceDataSearchMonth != '' and serviceDataSearchMonth != null">
+			AND month = #{serviceDataSearchMonth} 
+		</if>
+		<if test="serviceDataServiceType != '' and serviceDataServiceType != null">
+			AND service_class = #{serviceDataServiceType} 
+		</if>
+		<if test="serviceDataTitle != '' and serviceDataTitle != null">
+			AND title LIKE CONCAT(CONCAT('%', #{serviceDataTitle}), '%') 
+		</if>
+		
+	</select>
+	
+	
+	<!-- 通过参数查询月度服务数据详情 -->
+	<select id="getServiceDataList" parameterType="map" resultType="monthlyServiceData">
+		SELECT 
+			m.id id ,
+			m.year year , 
+			m.month month ,
+			s.name  serviceClass , 
+			m.title title 
+		FROM monthly_service_data m 
+		INNER JOIN sys_code s ON m.service_class = s.code 
+		WHERE m.user_code = #{userCode} 
+		<if test="serviceDataYear != '' and serviceDataYear != null">
+			AND m.year = #{serviceDataYear} 
+		</if>
+		<if test="serviceDataSearchMonth != '' and serviceDataSearchMonth != null">
+			AND m.month = #{serviceDataSearchMonth} 
+		</if>
+		<if test="serviceDataServiceType != '' and serviceDataServiceType != null">
+			AND m.service_class = #{serviceDataServiceType} 
+		</if>
+		<if test="serviceDataTitle != '' and serviceDataTitle != null">
+			AND m.title LIKE CONCAT(CONCAT('%', #{serviceDataTitle}), '%') 
+		</if>
+	</select>
+	
+	
+	<!-- 查看月报查询服务数据列表总数 -->
+	<select id="getServiceDataListByCodeCount" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM monthly_service_data 
+		WHERE user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+	</select>
+	
+	
+	<!-- 查看月报查询服务数据列表 -->
+	<select id="getServiceDataListByCode" parameterType="map" resultType="monthlyServiceData">
+		SELECT 
+		 	SKIP #{startNum} FIRST #{pageSize} 
+		 	
+			m.id id , 
+			m.user_code userCode , 
+			m.year year , 
+			m.month month , 
+			s.name serviceClass , 
+			m.time time , 
+			m.site site , 
+			m.title title , 
+			m.number number , 
+			m.picture picture , 
+			m.sketch sketch , 
+			m.audit_type auditType , 
+			m.create_stamp createStamp , 
+			m.update_stamp updateStamp ,
+			m.enter_number enterNumber 
+		FROM monthly_service_data m 
+		INNER JOIN sys_code s ON m.service_class = s.code 
+		WHERE m.user_code = #{matrixCode} 
+		<if test="year != '' and year != null">
+			AND m.year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND m.month = #{month} 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+		</if>
+	</select>
+	
+	
+	<!-- 通过id查询月度服务信息 -->
+	<select id="getMonthlyServiceDataById" parameterType="map" resultType="monthlyServiceData">
+		SELECT 
+			m.id id , 
+			m.user_code userCode , 
+			m.year year , 
+			m.month month , 
+			m.service_class serviceClass , 
+			m.time time , 
+			m.site site , 
+			m.title title , 
+			m.number number , 
+			m.picture picture , 
+			m.sketch sketch , 
+			m.create_stamp createStamp , 
+			m.update_stamp updateStamp , 
+			m.enter_number enterNumber 
+		FROM monthly_service_data m 
+		WHERE m.id = #{id} 
+	</select>
+	
+	<!-- 查看年报，统计各种服务开展次数 -->
+	<select id="getStatisticalByServiceType" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count" 
+		FROM 
+			monthly_service_data 
+		WHERE 
+			service_class = #{serviceType} 
+			AND year = #{year}
+			AND user_code = #{userCode}
+			<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType} 
+			</if>
+	</select>
+	
+	
+	<!-- 20170630 获取月度报表列表总数 -->
+	<select id="getMonthlyStatementListCount" parameterType="map" resultType="map">
+		SELECT
+			count(a.year) "count"
+		FROM
+			(
+				SELECT DISTINCT(year) year ,
+					month month
+				FROM
+					monthly_service_data 
+				WHERE user_code = #{userCode} 
+				<if test="year != '' and year != null">
+					AND year = #{year} 
+				</if>
+				<if test="month != '' and month != null">
+					AND month = #{month} 
+				</if>
+				<if test="userCode != '' and userCode != null">
+					AND user_code = #{userCode} 
+				</if>
+			) a
+	</select>
+	
+	
+	<!-- 20170630 获取月度报表列表 -->
+	<select id="getMonthlyStatementList" parameterType="map" resultType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize}
+			
+			DISTINCT(year) "year" , 
+			month "month" , 
+			audit_type "auditType" , 
+			submit_type "submitType" 
+		FROM
+			monthly_service_data 
+		WHERE user_code = #{userCode} 
+		<if test="year != '' and year != null">
+			AND year = #{year} 
+		</if>
+		<if test="month != '' and month != null">
+			AND month = #{month} 
+		</if>
+		<if test="userCode != '' and userCode != null">
+			AND user_code = #{userCode} 
+		</if>
+		ORDER BY "year" , "month"
+	</select>
+	
+	<!-- 通过userCode 年 月 删除月度服务信息表 -->
+	<delete id="deleteMonthlyServiceData" parameterType="map">
+		DELETE FROM monthly_service_data WHERE user_code = #{userCode} AND year = #{year} AND month = #{month} 
+	</delete>
+	
+	<!-- 通过userCode和年月获取月度服务信息 -->
+	<select id="getMonthlyServiceDataByYearAndMonth" parameterType="map" resultType="monthlyServiceData">
+		SELECT 
+			m.id id , 
+			m.user_code userCode , 
+			m.year year , 
+			m.month month , 
+			m.service_class serviceClass , 
+			m.time time , 
+			m.site site , 
+			m.title title , 
+			m.number number , 
+			m.picture picture , 
+			m.sketch sketch , 
+			m.create_stamp createStamp , 
+			m.update_stamp updateStamp , 
+			m.enter_number enterNumber 
+		FROM monthly_service_data m 
+		WHERE m.user_code = #{userCode} AND m.year = #{year}  AND m.month = #{month} 
+	</select>
+	
+	<!-- 更新月度服务数据表-->
+	<update id="updateMonthlyServiceData" parameterType="monthlyServiceData">
+		UPDATE monthly_service_data SET 
+		<if test="year != '' and year != null">
+			year = #{year} , 
+		</if>
+		<if test="month != '' and month != null">
+			month = #{month} , 
+		</if>
+		<if test="serviceClass != '' and serviceClass != null">
+			service_class = #{serviceClass} , 
+		</if>
+		<if test="time != '' and time != null">
+			time = #{time} , 
+		</if>
+		<if test="site != '' and site != null">
+			site = #{site} , 
+		</if>
+		<if test="title != '' and title != null">
+			title = #{title} , 
+		</if>
+		<if test="number != '' and number != null">
+			number = #{number} , 
+		</if>
+		<if test="picture != '' and picture != null">
+			picture = #{picture} , 
+		</if>
+		<if test="sketch != '' and sketch != null">
+			sketch = #{sketch} , 
+		</if>
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="submitType != '' and submitType != null">
+			submit_type = #{submitType} , 
+		</if>
+		<if test="enterNumber != '' and enterNumber != null">
+			enter_number = #{enterNumber} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND year = #{year} AND month = #{month}
+	</update>
+	
+	<!-- 查看月报时获取哪年填写了报表 -->
+	<select id="getMonthlyStatementYears" parameterType="map" resultType="map">
+		SELECT DISTINCT
+			(year) "year" 
+		FROM
+			monthly_service_data 
+		WHERE user_code = #{userCode} 
+	</select>
+	
+	<!-- 数据统计页面总数 -->
+	<select id="getServiceDataStatisticsCount" parameterType="map" resultType="map">
+		SELECT 
+			count(res.matrix_name) "count" 
+		FROM 
+			(
+				SELECT
+					a.matrix_name "matrix_name" ,
+					c.name "district" , 
+					m.service_year "serviceYear" ,	
+					m.service_quarter "serviceQuarter" ,
+					s.name "serviceType" , 
+					s.code "serviceCode" ,
+					a.user_code "userCode" , 
+					m.activity_class "serviceCode" 
+				FROM
+					exemplary_matrix_service_data m 
+				INNER JOIN exemplary_matrix a ON m.user_code = a.user_code 
+				INNER JOIN sys_code s ON m.activity_class  = s.code 
+				INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+				INNER JOIN sys_code c ON i.district = c.code 
+				WHERE 
+					<!-- a.city_audit_type = '2'	
+				AND -->
+					m.audit_type = '1' 
+					<if test="matrixName != '' and matrixName != null">
+						AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+					</if>
+					<if test="serviceType != '' and serviceType != null">
+						AND m.activity_class = #{serviceType}
+					</if>
+					<if test="year != '' and year != null">
+						AND m.service_year = #{year}
+					</if>
+					<if test="quarter != '' and quarter != null">
+						AND m.service_quarter = #{quarter}
+					</if>
+					<if test="district != '' and district != null">
+						AND i.district = #{district}
+					</if>
+				GROUP BY
+					m.service_year,
+					m.service_quarter,
+					m.activity_class,
+					a.matrix_name,
+					c.name,
+					s.name,
+					a.user_code,
+					s.code
+			) res
+	</select>
+	
+	<!-- 区级审核月度报表页面获取列表 -->
+	<select id="getServiceDataStatistics" parameterType="map" resultType="map">
+		SELECT
+			SKIP #{startNum} FIRST #{pageSize} 
+			
+			a.matrix_name "matrix_name" ,
+			c.name "district" , 
+			m.service_year "serviceYear" ,	
+			m.service_quarter "serviceQuarter" ,
+			s.name "serviceType" , 
+			s.code "serviceCode" ,
+			a.user_code "userCode" , 
+			c.code "districtCode",
+			m.activity_class "serviceCode" 
+		FROM
+			exemplary_matrix_service_data m 
+		INNER JOIN exemplary_matrix a ON m.user_code = a.user_code 
+		INNER JOIN sys_code s ON m.activity_class  = s.code 
+		INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		INNER JOIN sys_code c ON i.district = c.code 
+		WHERE 
+			<!-- a.city_audit_type = '2'	
+		AND -->
+			m.audit_type = '1' 
+			<if test="matrixName != '' and matrixName != null">
+				AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+			</if>
+			<if test="serviceType != '' and serviceType != null">
+				AND m.activity_class = #{serviceType}
+			</if>
+			<if test="year != '' and year != null">
+				AND m.service_year = #{year}
+			</if>
+			<if test="quarter != '' and quarter != null">
+				AND m.service_quarter = #{quarter}
+			</if>
+			<if test="district != '' and district != null">
+				AND i.district = #{district}
+			</if>
+		GROUP BY
+			m.service_year,
+			m.service_quarter,
+			m.activity_class,
+			a.matrix_name,
+			c.name,
+			s.name,
+			a.user_code,
+			s.code,
+			c.code
+		<if test='type != "" and type != null and type=="matrixNameTh" and sortType == "up"'>
+			ORDER BY a.matrix_name DESC
+		</if>
+		<if test='type != "" and type != null and type=="matrixNameTh" and sortType == "down"'>
+			ORDER BY a.matrix_name
+		</if>
+		
+		<if test='type != "" and type != null and type=="districtTh" and sortType == "up"'>
+			ORDER BY c.code DESC
+		</if>
+		<if test='type != "" and type != null and type=="districtTh" and sortType == "down"'>
+			ORDER BY c.code
+		</if>
+		
+		<if test='type != "" and type != null and type=="yearTh" and sortType == "up"'>
+			ORDER BY m.service_year DESC
+		</if>
+		<if test='type != "" and type != null and type=="yearTh" and sortType == "down"'>
+			ORDER BY m.service_year
+		</if>
+		
+		<if test='type != "" and type != null and type=="monthTh" and sortType == "up"'>
+			ORDER BY m.service_quarter DESC
+		</if>
+		<if test='type != "" and type != null and type=="monthTh" and sortType == "down"'>
+			ORDER BY m.service_quarter
+		</if>
+		
+		<if test='type != "" and type != null and type=="serviceTypeTh" and sortType == "up"'>
+			ORDER BY s.code DESC
+		</if>
+		<if test='type != "" and type != null and type=="serviceTypeTh" and sortType == "down"'>
+			ORDER BY s.code
+		</if>
+	</select>
+	
+	<!-- 数据统计页面查询每次服务类别服务总次数 -->
+	<select id="getServiceCountByServiceType" parameterType="map" resultType="map">
+	SELECT
+		COUNT(1) "count"
+	FROM
+		monthly_service_data msd
+	WHERE
+	        msd.user_code = #{userCode}
+		AND msd.year = #{year}
+	    AND msd.month = #{month}
+	    AND msd.service_class = #{serviceType}
+	    AND msd.audit_type = '1' 
+                         
+	</select>
+	
+	<!-- 20170719添加，数据统计页面，查询服务人数总计方法-->
+	<select id="getSumForPerson" parameterType="map" resultType="map">
+		SELECT 
+			SUM(m.number) "number" , 
+			SUM(m.enter_number) "enterNumber"
+		FROM
+			monthly_service_data m 
+		INNER JOIN exemplary_matrix_application a ON m.user_code = a.user_code 
+		INNER JOIN sys_code s ON m.service_class  = s.code 
+		INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		INNER JOIN sys_code c ON i.district = c.code 
+		WHERE 
+			<!-- a.city_audit_type = '2'	
+		AND -->
+			m.audit_type = '1' 		
+		<if test="matrixName != '' and matrixName != null">
+			AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+		<if test="paramDistrict != '' and paramDistrict != null">
+			AND i.district = #{paramDistrict}
+		</if>
+		<if test="serviceType != '' and serviceType != null">
+			AND m.service_class = #{serviceType}
+		</if>
+		<if test="fromYear != '' and fromYear != null">
+			AND m.year &gt;= #{fromYear}
+		</if>
+		<if test="fromMonth != '' and fromMonth != null">
+			AND m.month &gt;= #{fromMonth}
+		</if>
+		<if test="toYear != '' and toYear != null">
+			AND m.year &lt;= #{toYear}
+		</if>
+		<if test="toMonth != '' and toMonth != null">
+			AND m.month &lt;= #{toMonth}
+		</if>
+		<if test="district != '' and district != null">
+			AND i.district = #{district}
+		</if>
+	</select>
+	
+	<!-- 获取服务次数总数 -->
+	<select id="getSumForService" parameterType="map" resultType="map">
+		SELECT COUNT(res.matrix_name) "count" 
+		FROM 
+			(
+				SELECT
+					a.matrix_name matrix_name ,
+					c.name district , 
+					m.service_year year ,	
+					m.service_quarter quarter ,
+					s.name "serviceType"
+				FROM
+					exemplary_matrix_service_data m 
+				INNER JOIN exemplary_matrix a ON m.user_code = a.user_code 
+				INNER JOIN sys_code s ON m.activity_class  = s.code 
+				INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+				INNER JOIN sys_code c ON i.district = c.code 
+				WHERE 
+					<!-- a.city_audit_type = '2'	
+				AND -->
+					m.audit_type = '1' 
+				<if test="matrixName != '' and matrixName != null">
+					AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+				</if>
+				<if test="serviceType != '' and serviceType != null">
+					AND m.activity_class = #{serviceType}
+				</if>
+				<if test="year != '' and year != null">
+					AND m.service_year = #{year}
+				</if>
+				<if test="quarter != '' and quarter != null">
+					AND m.service_quarter &lt;= #{quarter}
+				</if>
+				<if test="district != '' and district != null">
+					AND i.district = #{district}
+				</if>
+			) res
+	</select>
+	
+	<!-- 获取数据统计详细信息方法 -->
+	<select id="getServiceDataStatisticsDetailList" parameterType="map" resultType="map">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+			
+			a.matrix_name "matrixName" ,
+			m.service_year "year" ,	
+			m.service_quarter "quarter" ,
+			s.name "serviceType" ,
+			m.activity_name "activityName" , 
+			m.person_quantity "personQuantity"  
+		FROM
+			exemplary_matrix_service_data m 
+		INNER JOIN exemplary_matrix a ON m.user_code = a.user_code 
+		INNER JOIN sys_code s ON m.activity_class  = s.code 
+		INNER JOIN enterprise_info i ON m.user_code = i.user_code 
+		INNER JOIN sys_code c ON i.district = c.code 
+		WHERE 
+			<!-- a.city_audit_type = '2'	
+		AND -->
+			m.audit_type = '1' 		
+		<if test="matrixName != '' and matrixName != null">
+			AND a.matrix_name LIKE CONCAT(CONCAT('%', #{matrixName}), '%') 
+		</if>
+		<if test="serviceType != '' and serviceType != null">
+			AND m.activity_class = #{serviceType}
+		</if>
+		<if test="year != '' and year != null">
+			AND m.service_year = #{year}
+		</if>
+		<if test="quarter != '' and quarter != null">
+			AND m.service_quarter &lt;= #{quarter}
+		</if>
+		<if test="district != '' and district != null">
+			AND i.district = #{district}
+		</if>
+	</select>
+	
+	<select id="getSubmitResult" parameterType="map" resultType="map">
+		SELECT 
+			submit_type "submitType" ,
+			audit_type "auditType"
+		FROM 
+			exemplary_matrix_service_data 
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear} 
+		AND 
+			service_quarter = #{serviceQuarter}
+			
+	</select>
+	
+</mapper>

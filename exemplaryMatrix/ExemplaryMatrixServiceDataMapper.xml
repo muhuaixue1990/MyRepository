@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixServiceData">
+	
+	<!-- 插入入驻企业信息 -->
+	<insert id="saveExemplaryMatrixServiceData" parameterType="exemplaryMatrixServiceData" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_service_data 
+		(
+			user_code , 
+			service_year , 
+			service_quarter , 
+			activity_name , 
+			activity_time , 
+			activity_address , 
+			activity_class , 
+			person_quantity , 
+			enterprise_quantity , 
+			cooperation_organization , 
+			enterprise_detail , 
+			activity_overview , 
+			total_expend , 
+			personal_expend , 
+			site_expend , 
+			data_expend , 
+			cooperation_organization_expend , 
+			other_expend , 
+			activity_inform_pic , 
+			activity_complete_pic , 
+			activity_part_pic , 
+			activity_content_pic , 
+			evaluate_pic , 
+			bill_pic , 
+			audit_type , 
+			submit_type , 
+			create_stamp , 
+			update_stamp , 
+			line_type , 
+			service_type , 
+			service_id , 
+			recommendations , 
+			cost
+		) VALUES (
+			#{userCode} , 
+			#{serviceYear} , 
+			#{serviceQuarter} , 
+			#{activityName} , 
+			#{activityTime} , 
+			#{activityAddress} , 
+			#{activityClass} , 
+			#{personQuantity} , 
+			#{enterpriseQuantity} , 
+			#{cooperationOrganization} , 
+			#{enterpriseDetail} , 
+			#{activityOverview} , 
+			#{totalExpend} , 
+			#{personalExpend} , 
+			#{siteExpend} , 
+			#{dataExpend} , 
+			#{cooperationOrganizationExpend} , 
+			#{otherExpend} , 
+			#{activityInformPic} , 
+			#{activityCompletePic} , 
+			#{activityPartPic} , 
+			#{activityContentPic} , 
+			#{evaluatePic} , 
+			#{billPic} , 
+			#{auditType} , 
+			#{submitType} , 
+			#{createStamp} , 
+			#{updateStamp} , 
+			#{lineType} , 
+			#{serviceType} , 
+			#{serviceId} , 
+			#{recommendations} , 
+			#{cost}
+		)
+	</insert>
+	
+	<!-- 通过userCode，year，quarter 删除基地开展服务情况 -->
+	<delete id="deleteExemplaryMatrixServiceDataByParams" parameterType="map">
+		DELETE FROM exemplary_matrix_service_data 
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear} 
+		AND
+			service_quarter = #{serviceQuarter}
+		AND 
+			create_stamp is null
+	</delete>
+	
+	<!-- 通过userCode，year，quarter 更新基地开展服务情况 -->
+	<update id="updateExemplaryMatrixServiceDataByParams" parameterType="exemplaryMatrixServiceData">
+		UPDATE exemplary_matrix_service_data SET 
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+		<if test="submitType != '' and submitType != null">
+			submit_type = #{submitType} , 
+		</if>
+		<if test="recommendations != '' and recommendations != null">
+			recommendations = #{recommendations} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND service_year = #{serviceYear} AND service_quarter = #{serviceQuarter} 
+	</update>
+	
+	
+	<!-- 通过Usercode，year，quarter获取基地开展服务情况数据 -->
+	<select id="findExemplaryMatrixServiceDataByParams" parameterType="map" resultType="exemplaryMatrixServiceData">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			d.id "id",
+			d.user_code "userCode", 
+			d.service_year "serviceYear", 
+			d.service_quarter "serviceQuarter", 
+			d.activity_name "activityName", 
+			d.activity_time "activityTime", 
+			d.activity_address "activityAddress", 
+			d.activity_class "activityClass", 
+			s.name "activityClassName" , 
+			d.person_quantity "personQuantity", 
+			d.enterprise_quantity "enterpriseQuantity", 
+			d.cooperation_organization "cooperationOrganization", 
+			d.enterprise_detail "enterpriseDetail", 
+			d.activity_overview "activityOverview", 
+			d.total_expend "totalExpend", 
+			d.personal_expend "personalExpend", 
+			d.site_expend "siteExpend", 
+			d.data_expend "dataExpend", 
+			d.cooperation_organization_expend "cooperationOrganizationExpend", 
+			d.other_expend "otherExpend", 
+			d.activity_inform_pic "activityInformPic", 
+			d.activity_complete_pic "activityCompletePic", 
+			d.activity_part_pic "activityPartPic", 
+			d.activity_content_pic "activityContentPic", 
+			d.evaluate_pic "evaluatePic", 
+			d.bill_pic "billPic", 
+			d.audit_type "auditType", 
+			d.submit_type "submitType", 
+			d.create_stamp "createStamp", 
+			d.update_stamp "updateStamp",
+			d.recommendations "recommendations" , 
+			d.cost "cost"
+		FROM 
+			exemplary_matrix_service_data d
+			INNER JOIN 
+			sys_code s ON d.activity_class = s.code
+		WHERE 
+			1=1
+		<if test="id != '' and id != null">
+			AND d.id = #{id} 
+		</if>
+		<if test="userCode != '' and userCode != null">
+			AND d.user_code = #{userCode} 
+		</if>
+		<if test="serviceYear != '' and serviceYear != null">
+			AND
+				d.service_year = #{serviceYear} 
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null">
+			AND
+				d.service_quarter = #{serviceQuarter}
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND d.audit_type = #{auditType}
+		</if>
+		<if test="lineType != '' and lineType != null">
+			AND d.line_type = #{lineType}
+		</if>
+		<if test="activityClass != '' and activityClass != null">
+			AND d.activity_class = #{activityClass}
+		</if>
+		<if test="serviceId != '' and serviceId != null">
+			AND d.service_id = #{serviceId}
+		</if>
+	</select>
+	
+	<!-- 通过Usercode，year，quarter获取基地开展服务情况数据(分页)总数 -->
+	<select id="findExemplaryMatrixServiceDataByParamsForPageCount" parameterType="map" resultType="map">
+		SELECT 
+			count(*) "count"
+		FROM 
+			exemplary_matrix_service_data 
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear} 
+		AND
+			create_stamp IS NOT NULL
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 1">
+			AND
+				service_quarter IN (1)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 2">
+			AND
+				service_quarter IN (1,2)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 3">
+			AND
+				service_quarter IN (1,2,3)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 4">
+			AND
+				service_quarter IN (1,2,3,4)
+		</if>	
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType}
+		</if>
+		<if test="lineType != '' and lineType != null">
+			AND line_type = #{lineType}
+		</if>
+		<if test="activityClass != '' and activityClass != null">
+			AND activity_class = #{activityClass}
+		</if>
+	</select>
+	
+	<select id="findExemplaryMatrixServiceDataByParamsForPage" parameterType="map" resultType="exemplaryMatrixServiceData">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			d.id "id",
+			d.user_code "userCode", 
+			d.service_year "serviceYear", 
+			d.service_quarter "serviceQuarter", 
+			d.activity_name "activityName", 
+			d.activity_time "activityTime", 
+			d.activity_address "activityAddress", 
+			d.activity_class "activityClass", 
+			s.name "activityClassName" , 
+			d.person_quantity "personQuantity", 
+			d.enterprise_quantity "enterpriseQuantity", 
+			d.cooperation_organization "cooperationOrganization", 
+			d.enterprise_detail "enterpriseDetail", 
+			d.activity_overview "activityOverview", 
+			d.total_expend "totalExpend", 
+			d.personal_expend "personalExpend", 
+			d.site_expend "siteExpend", 
+			d.data_expend "dataExpend", 
+			d.cooperation_organization_expend "cooperationOrganizationExpend", 
+			d.other_expend "otherExpend", 
+			d.activity_inform_pic "activityInformPic", 
+			d.activity_complete_pic "activityCompletePic", 
+			d.activity_part_pic "activityPartPic", 
+			d.activity_content_pic "activityContentPic", 
+			d.evaluate_pic "evaluatePic", 
+			d.bill_pic "billPic", 
+			d.audit_type "auditType", 
+			d.submit_type "submitType", 
+			d.create_stamp "createStamp", 
+			d.update_stamp "updateStamp",
+			d.recommendations "recommendations" , 
+			d.cost "cost"
+		FROM 
+			exemplary_matrix_service_data d
+			INNER JOIN 
+			sys_code s ON d.activity_class = s.code
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear} 
+		AND
+			create_stamp IS NOT NULL
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 1">
+			AND
+				service_quarter IN (1)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 2">
+			AND
+				service_quarter IN (1,2)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 3">
+			AND
+				service_quarter IN (1,2,3)
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null and serviceQuarter == 4">
+			AND
+				service_quarter IN (1,2,3,4)
+		</if>	
+		<if test="auditType != '' and auditType != null">
+			AND audit_type = #{auditType}
+		</if>
+		<if test="lineType != '' and lineType != null">
+			AND line_type = #{lineType}
+		</if>
+		<if test="activityClass != '' and activityClass != null">
+			AND activity_class = #{activityClass}
+		</if>
+	</select>
+	
+	<!-- 查询当前年份和季度数据数量 -->
+	<select id="findStatementCountByNowTime" parameterType="map" resultType="map">
+		SELECT 
+			count(*) "count"
+		FROM 
+			exemplary_matrix_service_data 
+		WHERE user_code = #{userCode} 
+			AND service_year = #{serviceYear} 
+	</select>
+	
+	<!-- 获取基地报表管理列表总数 -->
+	<select id="findStatementManageListCount" parameterType="map" resultType="map">
+		SELECT
+			count(a.'serviceYear') "count"
+		FROM
+			(
+				SELECT DISTINCT(service_year) "serviceYear" ,
+						service_quarter "serviceQuarter"
+				FROM
+					exemplary_matrix_service_data 
+				WHERE user_code = #{userCode} 
+				<if test="serviceYear != '' and serviceYear != null">
+					AND service_year = #{serviceYear} 
+				</if>
+				<if test="serviceQuarter != '' and serviceQuarter != null">
+					AND service_quarter = #{serviceQuarter} 
+				</if>
+			) a
+	</select>
+	
+	<!-- 获取基地报表管理列表 -->
+	<select id="findStatementManageList" parameterType="map" resultType="map">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			
+			DISTINCT(service_year) "serviceYear" ,
+			service_quarter "serviceQuarter" , 
+			audit_type "auditType" , 
+			submit_type "submitType" ,
+			recommendations "recommendations"
+		FROM
+			exemplary_matrix_service_data 
+		WHERE user_code = #{userCode} 
+		<if test="serviceYear != '' and serviceYear != null">
+			AND service_year = #{serviceYear} 
+		</if>
+		<if test="serviceQuarter != '' and serviceQuarter != null">
+			AND service_quarter = #{serviceQuarter} 
+		</if>
+		ORDER BY "serviceYear" , "serviceQuarter" 
+	</select>
+	
+	<!-- 查询符合完成时间条件的活动id集合 -->
+	<select id="findActivityIdList" parameterType="map" resultType="map">
+		SELECT
+			id "id" , 
+			user_code "userCode" , 
+			service_type "serviceType" , 
+			activity_title "activityTitle" , 
+			activity_end_date "activityEndDate" , 
+			address_detail "addressDetail"
+		FROM 
+			activity_items	
+		WHERE 
+			user_code = #{userCode} 
+		AND 
+			activity_end_date BETWEEN #{startTime} AND #{endTime}
+		AND 
+			is_verify = '1'
+		<if test="serviceSort != '' and serviceSort != null">
+			AND service_type = #{serviceSort} 
+		</if>
+	</select>
+	
+	<!--  -->
+	<select id="findServiceList" parameterType="map" resultType="map">
+		SELECT 
+			t.user_code "userCode" , 
+			i.id "id" , 
+			i.service_type "serviceType" , 
+			i.service_title "serviceTitle" , 
+			t.dealint_timestamp "dealintTimestamp"
+		FROM
+			services_transactions t
+		INNER JOIN service_items i ON i.id = t.service_item_id
+		WHERE 
+			i.user_code = #{userCode} 
+		AND 
+			t.order_receiving_timestamp BETWEEN #{startTime} AND #{endTime}
+		AND
+			t.service_status IN (3,5,7)
+		<if test="serviceSort != '' and serviceSort != null">
+			AND i.service_type = #{serviceSort} 
+		</if>
+	
+	</select>
+	
+	<!-- 根据活动id查询该活动服务人数 -->
+	<select id="findPersonCountByActivityId" parameterType="map" resultType="map">
+		SELECT 
+			count(id) "count"
+		FROM 
+			activity_transactions
+		WHERE 
+			activity_item_id = #{activityId}
+	</select>
+	
+	<!-- 查询线下活动总数 -->
+	<select id="findOfflineActivityCount" parameterType="map" resultType="map">
+		SELECT
+			count(*) "count" , 
+			sum(person_quantity) "personQuantity" , 
+			sum(enterprise_quantity) "enterpriseQuantity" ,
+			sum(total_expend) "totalExpend"
+		FROM 
+			exemplary_matrix_service_data
+		WHERE 
+			user_code = #{userCode}
+		AND
+			service_year = #{year} 
+		AND
+			line_type = 'offline'
+		<if test="quarter != '' and quarter != null and quarter == 1">
+			AND
+				service_quarter IN (1)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 2">
+			AND
+				service_quarter IN (1,2)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 3">
+			AND
+				service_quarter IN (1,2,3)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 4">
+			AND
+				service_quarter IN (1,2,3,4)
+		</if>
+		<if test="serviceSort != '' and serviceSort != null">
+			AND
+				activity_class = #{serviceSort}
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND
+				audit_type = #{auditType}
+		</if>
+	</select>
+	
+	<!-- 查询线上活动总数 -->
+	<select id="findOnlineActivityCount" parameterType="map" resultType="map">
+		SELECT
+			count(*) "count" , 
+			sum(person_quantity) "personQuantity" , 
+			sum(enterprise_quantity) "enterpriseQuantity" ,
+			sum(total_expend) "totalExpend"
+		FROM 
+			exemplary_matrix_service_data
+		WHERE 
+			user_code = #{userCode}
+		AND
+			service_year = #{year} 
+		AND
+			line_type = 'online'
+		<if test="quarter != '' and quarter != null and quarter == 1">
+			AND
+				service_quarter IN (1)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 2">
+			AND
+				service_quarter IN (1,2)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 3">
+			AND
+				service_quarter IN (1,2,3)
+		</if>
+		<if test="quarter != '' and quarter != null and quarter == 4">
+			AND
+				service_quarter IN (1,2,3,4)
+		</if>
+		<if test="serviceSort != '' and serviceSort != null">
+			AND
+				activity_class = #{serviceSort}
+		</if>
+		<if test="auditType != '' and auditType != null">
+			AND
+				audit_type = #{auditType}
+		</if>
+	</select>
+	
+	<!-- 查询已经填写了报表的年份和季度 -->
+	<select id="findHaveQuarterStatementTime" parameterType="map" resultType="map">
+		SELECT 
+			 DISTINCT(em.service_year) "serviceYear", 
+			 em.service_quarter "serviceQuarter"
+		FROM 
+			exemplary_matrix_service_data em
+		INNER JOIN 
+			enterprise_info e ON em.user_code = e.user_code
+		WHERE 
+			1=1
+		<if test="userCode != '' and userCode != null">
+			AND
+				em.user_code = #{userCode}
+		</if>
+		<if test="deitrict != '' and deitrict != null">
+			AND
+				e.district = #{deitrict}
+		</if>
+		ORDER BY 
+			em.service_year , em.service_quarter
+	</select>
+	
+	<!-- 查询发布信息的数量 -->
+	<select id="findPublishInfo" parameterType="map" resultType="map">
+		SELECT 
+		        count(bi.id) "count"
+		FROM	
+			bms_platform_publish_info bi	
+		INNER JOIN 
+		        custom_user cu ON bi.publisher_id = cu.id
+		WHERE 
+		        bi.publisher_type = '2'
+		AND
+		        cu.user_code = #{userCode}
+		AND
+		        bi.publish_time BETWEEN #{fromTime} AND #{toTime}
+	</select>
+	
+	<select id="findOfflineDataListCount" parameterType="map" resultType="map">
+		SELECT 
+			count(*) "count"
+		FROM
+			exemplary_matrix_service_data 
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear}
+		AND
+			service_quarter = #{serviceQuarter}
+		AND 
+			line_type = 'offline'
+		AND
+			create_stamp is not null
+	</select>
+	
+	<select id="findOfflineDataList" parameterType="map" resultType="exemplaryMatrixServiceData">
+		SELECT 
+			<if test="startNum != '' and startNum != null and pageSize != '' and pageSize != null">
+				SKIP #{startNum} FIRST #{pageSize} 
+			</if>
+			d.id "id" , 
+			d.user_code "userCode", 
+			d.service_year "serviceYear", 
+			d.service_quarter "serviceQuarter", 
+			d.activity_name "activityName", 
+			d.activity_time "activityTime", 
+			d.activity_address "activityAddress", 
+			d.activity_class "activityClass", 
+			s.name "activityClassName" , 
+			d.person_quantity "personQuantity", 
+			d.enterprise_quantity "enterpriseQuantity", 
+			d.cooperation_organization "cooperationOrganization", 
+			d.enterprise_detail "enterpriseDetail", 
+			d.activity_overview "activityOverview", 
+			d.total_expend "totalExpend", 
+			d.personal_expend "personalExpend", 
+			d.site_expend "siteExpend", 
+			d.data_expend "dataExpend", 
+			d.cooperation_organization_expend "cooperationOrganizationExpend", 
+			d.other_expend "otherExpend", 
+			d.activity_inform_pic "activityInformPic", 
+			d.activity_complete_pic "activityCompletePic", 
+			d.activity_part_pic "activityPartPic", 
+			d.activity_content_pic "activityContentPic", 
+			d.evaluate_pic "evaluatePic", 
+			d.bill_pic "billPic", 
+			d.audit_type "auditType", 
+			d.submit_type "submitType", 
+			d.create_stamp "createStamp", 
+			d.update_stamp "updateStamp"
+		FROM 
+			exemplary_matrix_service_data d
+			INNER JOIN 
+			sys_code s ON d.activity_class = s.code
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear}
+		AND
+			service_quarter = #{serviceQuarter}
+		AND 
+			line_type = 'offline'
+		AND
+			create_stamp is not null
+	</select>
+	
+	<delete id="deleteServiceDataById" parameterType="map">
+		DELETE FROM exemplary_matrix_service_data WHERE service_id = #{serviceId}
+	</delete>
+	
+	<update id="updateExemplaryMatrixServiceData" parameterType="exemplaryMatrixServiceData">
+		UPDATE exemplary_matrix_service_data SET 
+			<if test="userCode != '' and userCode != null">user_code = #{userCode} , </if>
+			<if test="serviceYear != '' and serviceYear != null">service_year = #{serviceYear} , </if>
+			<if test="serviceQuarter != '' and serviceQuarter != null">service_quarter = #{serviceQuarter} , </if>
+			<if test="activityName != '' and activityName != null">activity_name = #{activityName} , </if>
+			<if test="activityTime != '' and activityTime != null">activity_time = #{activityTime} , </if>
+			<if test="activityAddress != '' and activityAddress != null">activity_address = #{activityAddress} , </if>
+			<if test="activityClass != '' and activityClass != null">activity_class = #{activityClass} , </if>
+			<if test="personQuantity != '' and personQuantity != null">person_quantity = #{personQuantity} , </if>
+			<if test="enterpriseQuantity != '' and enterpriseQuantity != null">enterprise_quantity = #{enterpriseQuantity} , </if>
+			<if test="cooperationOrganization != '' and cooperationOrganization != null">cooperation_organization = #{cooperationOrganization} , </if>
+			<if test="enterpriseDetail != '' and enterpriseDetail != null">enterprise_detail = #{enterpriseDetail} , </if>
+			<if test="activityOverview != '' and activityOverview != null">activity_overview = #{activityOverview} , </if>
+			<if test="totalExpend != null">total_expend = #{totalExpend} , </if>
+			<if test="personalExpend != null">personal_expend = #{personalExpend} , </if>
+			<if test="siteExpend != null">site_expend = #{siteExpend} , </if>
+			<if test="dataExpend != null">data_expend = #{dataExpend} , </if>
+			<if test="cooperationOrganizationExpend != null">cooperation_organization_expend = #{cooperationOrganizationExpend} , </if>
+			<if test="otherExpend != null">other_expend = #{otherExpend} , </if>
+			<if test="activityInformPic != '' and activityInformPic != null">activity_inform_pic = #{activityInformPic} , </if>
+			<if test="activityCompletePic != '' and activityCompletePic != null">activity_complete_pic = #{activityCompletePic} , </if>
+			<if test="activityPartPic != '' and activityPartPic != null">activity_part_pic = #{activityPartPic} , </if>
+			<if test="activityContentPic != '' and activityContentPic != null">activity_content_pic = #{activityContentPic} , </if>
+			<if test="evaluatePic != '' and evaluatePic != null">evaluate_pic = #{evaluatePic} , </if>
+			bill_pic = #{billPic} ,
+			<if test="auditType != '' and auditType != null">audit_type = #{auditType} , </if>
+			<if test="submitType != '' and submitType != null">submit_type = #{submitType} , </if>
+			<if test="lineType != '' and lineType != null">line_type = #{lineType} , </if>
+			<if test="serviceType != '' and serviceType != null">service_type = #{serviceType} , </if>
+			<if test="serviceId != '' and serviceId != null">service_id = #{serviceId} , </if>
+			<if test="recommendations != '' and recommendations != null">recommendations = #{recommendations} , </if>
+			cost = #{cost} ,
+			update_stamp = #{updateStamp}
+		WHERE 
+			id = #{id}
+	</update>
+	
+	<!-- 通过usercode year quarter获取审核结果 -->
+	<select id="getAuditResult" parameterType="map" resultType="exemplaryMatrixServiceData">
+		SELECT 
+			DISTINCT(service_year) "serviceYear" ,
+			service_quarter "serviceQuarter" , 
+			audit_type "auditType" , 
+			submit_type "submitType" ,
+			recommendations "recommendations"
+		FROM 
+			exemplary_matrix_service_data
+		WHERE user_code = #{userCode} AND service_year=#{serviceYear} AND service_quarter = #{serviceQuarter}
+	</select>
+	
+</mapper>

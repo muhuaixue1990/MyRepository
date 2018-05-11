@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixSettledEnterprise">
+	
+	<!-- 获取入驻企业列表总数 -->
+	<select id="findSettledEnterpriseCount" resultType="map">
+		SELECT 
+			count(em.id) "count"
+		FROM 
+			exemplary_matrix_settled_enterprise em 
+		WHERE 
+			em.user_code = #{userCode} 
+			<if test="enterName != '' and enterName != null">
+				AND em.enter_name LIKE CONCAT(CONCAT('%', #{enterName}), '%') 
+			</if>
+	</select>
+	
+	<!-- 获取入驻企业列表总数 -->
+	<select id="findSettledEnterpriseList" parameterType="map" resultType="exemplaryMatrixSettledEnterprise">
+		SELECT 
+			SKIP #{startNum} FIRST #{pageSize} 
+		
+			em.id "id" , 
+			em.user_code "userCode" , 
+			em.enter_name "enterName" , 
+			em.registered_address "registeredAddress" , 
+			em.legal_representative "legalRepresentative" , 
+			em.contacter "contacter" , 
+			em.contact_phone "contactPhone" , 
+			em.product_profession "productProfession" , 
+			em.picture "picture" , 
+			em.create_stamp "createStamp" , 
+			em.update_stamp "updateStamp"
+		FROM 
+			exemplary_matrix_settled_enterprise em 
+		WHERE 
+			em.user_code = #{userCode} 
+			<if test="enterName != '' and enterName != null">
+				AND em.enter_name LIKE CONCAT(CONCAT('%', #{enterName}), '%') 
+			</if>
+	</select>
+	
+	<!-- 通过id获取入驻企业信息 -->
+	<select id="findSettledEnterpriseById" parameterType="map" resultType="exemplaryMatrixSettledEnterprise">
+		SELECT 
+			em.id "id" , 
+			em.user_code "userCode" , 
+			em.enter_name "enterName" , 
+			em.registered_address "registeredAddress" , 
+			em.legal_representative "legalRepresentative" , 
+			em.contacter "contacter" , 
+			em.contact_phone "contactPhone" , 
+			em.product_profession "productProfession" , 
+			em.picture "picture" , 
+			em.create_stamp "createStamp" , 
+			em.update_stamp "updateStamp"
+		FROM 
+			exemplary_matrix_settled_enterprise em 
+		WHERE 
+			em.id = #{id} 
+	</select>
+	
+	<!-- 通过id删除入驻企业信息 -->
+	<delete id="deleteSettledEnterpriseById" parameterType="map">
+		DELETE FROM 
+			exemplary_matrix_settled_enterprise
+		WHERE 
+			id = #{id} 
+	</delete>
+	
+	<!-- 插入入驻企业信息 -->
+	<insert id="saveSettledEnterprise" parameterType="exemplaryMatrixSettledEnterprise" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_settled_enterprise 
+		(
+			user_code , 
+			enter_name , 
+			registered_address , 
+			legal_representative , 
+			contacter , 
+	        contact_phone ,
+			product_profession , 
+			picture , 
+	        create_stamp , 
+	        update_stamp  
+		) VALUES (
+			#{userCode} , 
+			#{enterName} , 
+			#{registeredAddress} , 
+			#{legalRepresentative} , 
+			#{contacter} , 
+	        #{contactPhone} ,
+			#{productProfession} , 
+			#{picture} , 
+			#{createStamp} , 
+			#{updateStamp}
+		)
+	</insert>
+	
+	<!-- 通过id更新入驻企业信息 -->
+	<update id="updateSettledEnterpriseById" parameterType="exemplaryMatrixSettledEnterprise">
+		UPDATE exemplary_matrix_settled_enterprise SET 
+		<if test="enterName != '' and enterName != null">
+			enter_name = #{enterName} , 
+		</if>
+		<if test="registeredAddress != '' and registeredAddress != null">
+			registered_address = #{registeredAddress} , 
+		</if>
+		<if test="legalRepresentative != '' and legalRepresentative != null">
+			legal_representative = #{legalRepresentative} , 
+		</if>
+		<if test="contacter != '' and contacter != null">
+			contacter = #{contacter} , 
+		</if>
+		<if test="contactPhone != '' and contactPhone != null">
+			contact_phone = #{contactPhone} , 
+		</if>
+		<if test="productProfession != '' and productProfession != null">
+			product_profession = #{productProfession} , 
+		</if>
+			picture = #{picture} , 
+			update_stamp = #{updateStamp}
+		WHERE
+			id = #{id}
+	</update>
+	
+</mapper>

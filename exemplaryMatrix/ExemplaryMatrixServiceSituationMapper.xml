@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixServiceSituation">
+	
+	<!-- 插入入驻企业信息 -->
+	<insert id="saveExemplaryMatrixServiceSituation" parameterType="exemplaryMatrixServiceSituation" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO exemplary_matrix_service_situation 
+		(
+			user_code , 
+			service_year , 
+			service_quarter , 
+			service_type , 
+			service_content , 
+			service_effect , 
+			service_scope , 
+			financing_amount , 
+			audit_type , 
+			create_stamp , 
+			update_stamp
+		) VALUES (
+			#{userCode} , 
+			#{serviceYear} , 
+			#{serviceQuarter} , 
+			#{serviceType} , 
+			#{serviceContent} , 
+			#{serviceEffect} , 
+			#{serviceScope} , 
+			#{financingAmount} , 
+			#{auditType} , 
+			#{createStamp} , 
+			#{updateStamp}  
+		)
+	</insert>
+	
+	<!-- 根据参数删除服务情况 -->
+	<delete id="deleteExemplaryMatrixServiceSituationByParam" parameterType="map">
+		DELETE FROM exemplary_matrix_service_situation WHERE user_code = #{userCode} AND service_year = #{serviceYear} AND service_quarter = #{serviceQuarter}
+	</delete>
+	
+	<!-- 通过userCode，year，quarter获取服务情况汇总信息 -->
+	<select id="findExemplaryMatrixServiceSituationByParams" parameterType="map" resultType="exemplaryMatrixServiceSituation">
+		SELECT 
+			user_code userCode, 
+			service_year serviceYear, 
+			service_quarter serviceQuarter, 
+			service_type serviceType, 
+			service_content serviceContent, 
+			service_effect serviceEffect, 
+			service_scope serviceScope, 
+			financing_amount financingAmount, 
+			audit_type auditType, 
+			create_stamp createStamp, 
+			update_stamp updateStamp
+		FROM 
+			exemplary_matrix_service_situation
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear}
+		AND
+			service_quarter = #{serviceQuarter} 
+		<if test="auditType != '' and auditType != null">
+			AND
+				audit_type = #{auditType}
+		</if>
+	</select>
+	
+	<!-- 根据参数更新服务情况汇总表 -->
+	<update id="updateExemplaryMatrixServiceSituationByParams" parameterType="exemplaryMatrixServiceSituation">
+		UPDATE exemplary_matrix_service_situation SET 
+		<if test="auditType != '' and auditType != null">
+			audit_type = #{auditType} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE user_code = #{userCode} AND service_year = #{serviceYear} AND service_quarter = #{serviceQuarter} 
+	</update>
+	
+	<!-- 查询投融资金额 -->
+	<select id="findFinancingAmountByParams" parameterType="map" resultType="exemplaryMatrixServiceSituation">
+		SELECT 
+			financing_amount "financingAmount" 
+		FROM 
+			exemplary_matrix_service_situation
+		WHERE 
+			user_code = #{userCode} 
+		AND
+			service_year = #{serviceYear}
+		AND
+			service_quarter = #{serviceQuarter} 
+		AND 
+			service_type = #{serviceType}
+		<if test="auditType != '' and auditType != null">
+			AND
+				audit_type = #{auditType}
+		</if>
+	
+	</select>
+	
+</mapper>

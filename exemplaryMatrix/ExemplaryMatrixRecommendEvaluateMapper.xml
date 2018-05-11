@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.zl.bean.ExemplaryMatrixRecommendEvaluate">
+	
+	<!-- 插入示范基地——示范基地推荐表，企业推荐部分 -->
+	<insert id="saveExemplaryMatrixRecommendEvaluate" parameterType="exemplaryMatrixRecommendEvaluate">
+		INSERT INTO exemplary_matrix_recommend_evaluate 
+		(
+			user_code , 
+			exemplary_matrix_application_id , 
+			enterprise_name , 
+			name , 
+			duty , 
+			contact_phone , 
+			enjoy_service , 
+			accord , 
+			evaluate , 
+			create_stamp , 
+			update_stamp 
+		) VALUES (
+			#{userCode} , 
+			#{exemplaryMatrixApplicationId} , 
+			#{enterpriseName} , 
+			#{name} , 
+			#{duty} , 
+			#{contactPhone} , 
+			#{enjoyService} , 
+			#{accord} , 
+			#{evaluate} , 
+			#{createStamp} , 
+			#{updateStamp} 
+		)
+	</insert>
+	
+	<!-- 更新示范基地——示范基地推荐表，企业推荐部分-->
+	<update id="updateExemplaryMatrixRecommendEvaluate" parameterType="exemplaryMatrixRecommendEvaluate">
+		UPDATE exemplary_matrix_recommend_evaluate SET 
+		<if test="enterpriseName != '' and enterpriseName != null">
+			enterprise_name = #{enterpriseName} , 
+		</if>
+		<if test="name != '' and name != null">
+			name = #{name} , 
+		</if>
+		<if test="duty != '' and duty != null">
+			duty = #{duty} , 
+		</if>
+		<if test="contactPhone != '' and contactPhone != null">
+			contact_phone = #{contactPhone} , 
+		</if>
+		<if test="enjoyService != '' and enjoyService != null">
+			enjoy_service = #{enjoyService} , 
+		</if>
+		<if test="accord != '' and accord != null">
+			accord = #{accord} , 
+		</if>
+		<if test="evaluate != '' and evaluate != null">
+			evaluate = #{evaluate} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE id = #{id} AND user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</update>
+	
+	<!-- 查询示范基地——示范基地推荐表，企业推荐部分-->
+	<select id="getExemplaryMatrixRecommendEvaluateList" parameterType="map" resultType="exemplaryMatrixRecommendEvaluate">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			exemplary_matrix_application_id exemplaryMatrixApplicationId , 
+			enterprise_name enterpriseName , 
+			name name , 
+			duty duty , 
+			contact_phone contactPhone , 
+			enjoy_service enjoyService , 
+			accord accord , 
+			evaluate evaluate , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM exemplary_matrix_recommend_evaluate 
+		WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</select>
+	
+	<!-- 查询示范基地——示范基地推荐表，企业推荐部分(Map)-->
+	<select id="getExemplaryMatrixRecommendEvaluateMapList" parameterType="map" resultType="java.util.LinkedHashMap">
+		SELECT 
+			enterprise_name "enterpriseName" , 
+			name "name" , 
+			duty "duty" , 
+			contact_phone "contactPhone" , 
+			enjoy_service "enjoyService" , 
+			accord "accord" , 
+			evaluate "evaluate" 
+		FROM exemplary_matrix_recommend_evaluate 
+		WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</select>
+	
+	<delete id="deleteExemplaryMatrixRecommendEvaluateByParams">
+		DELETE FROM exemplary_matrix_recommend_evaluate WHERE user_code = #{userCode} AND exemplary_matrix_application_id = #{exemplaryMatrixApplicationId}
+	</delete>
+	
+	
+	<!-- 通过id获取推荐附表信息-->
+	<select id="getExemplaryMatrixRecommendEvaluateById" parameterType="map" resultType="exemplaryMatrixRecommendEvaluate">
+		SELECT 
+			id id , 
+			user_code userCode , 
+			exemplary_matrix_application_id exemplaryMatrixApplicationId , 
+			enterprise_name enterpriseName , 
+			name name , 
+			duty duty , 
+			contact_phone contactPhone , 
+			enjoy_service enjoyService , 
+			accord accord , 
+			evaluate evaluate , 
+			create_stamp createStamp , 
+			update_stamp updateStamp 
+		FROM exemplary_matrix_recommend_evaluate 
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 通过id删除推荐附表信息 -->
+	<delete id="deleteExemplaryMatrixRecommendEvaluateById" parameterType="map">
+		DELETE FROM 
+			exemplary_matrix_recommend_evaluate 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 通过id更新推荐表附表-->
+	<update id="updateExemplaryMatrixRecommendEvaluateById" parameterType="exemplaryMatrixRecommendEvaluate">
+		UPDATE exemplary_matrix_recommend_evaluate SET 
+		<if test="enterpriseName != '' and enterpriseName != null">
+			enterprise_name = #{enterpriseName} , 
+		</if>
+		<if test="name != '' and name != null">
+			name = #{name} , 
+		</if>
+		<if test="duty != '' and duty != null">
+			duty = #{duty} , 
+		</if>
+		<if test="contactPhone != '' and contactPhone != null">
+			contact_phone = #{contactPhone} , 
+		</if>
+		<if test="enjoyService != '' and enjoyService != null">
+			enjoy_service = #{enjoyService} , 
+		</if>
+		<if test="accord != '' and accord != null">
+			accord = #{accord} , 
+		</if>
+		<if test="evaluate != '' and evaluate != null">
+			evaluate = #{evaluate} , 
+		</if>
+			update_stamp = #{updateStamp} 
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
